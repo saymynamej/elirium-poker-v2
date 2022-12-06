@@ -1,8 +1,10 @@
 package ru.smn.poker.actions
 
-class ActionServiceImpl : ActionService {
+import org.springframework.stereotype.Service
 
-    override fun doAction(actionRequest: ActionRequest) {
+@Service
+class ActionServiceImpl : ActionService {
+    override fun doAction(actionRequest: ActionRequest): ActionResponse {
         TODO("Not yet implemented")
     }
 }

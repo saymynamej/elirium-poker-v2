@@ -16,6 +16,8 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.awaitility:awaitility:4.2.0")
     implementation(project(":elirium-common"))
     implementation(project(":elirium-logger"))
     testImplementation(kotlin("test"))

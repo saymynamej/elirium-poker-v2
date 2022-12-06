@@ -15,6 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     testImplementation(kotlin("test"))
 }
 

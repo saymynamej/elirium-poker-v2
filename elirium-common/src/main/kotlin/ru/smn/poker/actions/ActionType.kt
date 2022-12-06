@@ -5,5 +5,6 @@ enum class ActionType {
     BET,
     RAISE,
     ALL_IN,
-    CHECK
+    CHECK,
+    MOCK
 }
