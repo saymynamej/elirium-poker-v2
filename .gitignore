@@ -1,0 +1,16 @@
+# IDEA
+# ----
+.idea
+.shelf
+/*.iml
+/*.ipr
+/*.iws
+
+.gradle/
+gradle/
+build/
+*/build/
+
+/.gradle/
+/gradle/
+/build/
