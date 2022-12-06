@@ -21,7 +21,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
-
     testImplementation(kotlin("test"))
 }
 

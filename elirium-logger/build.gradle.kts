@@ -15,9 +15,8 @@ repositories {
 }
 
 dependencies {
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation(project(":elirium-common"))
-    implementation(project(":elirium-logger"))
     testImplementation(kotlin("test"))
 }
 

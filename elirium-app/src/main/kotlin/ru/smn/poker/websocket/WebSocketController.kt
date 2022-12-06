@@ -9,19 +9,26 @@ import ru.smn.poker.actions.ActionResponse
 import ru.smn.poker.core.GameService
 import ru.smn.poker.game.CreateGameRequest
 import ru.smn.poker.game.CreateGameResponse
+import java.util.UUID
 
 @RestController
 class WebSocketController(private val gameService: GameService) {
 
     @SendTo("/poker/games")
-    @MessageMapping("/createGame")
+    @MessageMapping("/game/create")
     fun createGame(@Payload createGame: CreateGameRequest): CreateGameResponse {
         return gameService.createGame(createGame)
     }
 
     @SendTo("/poker/actions")
-    @MessageMapping("/doAction")
+    @MessageMapping("/game/action")
     fun doAction(@Payload actionRequest: ActionRequest): ActionResponse {
         return ActionResponse(1000, "hello")
+    }
+
+    @SendTo("/poker/games")
+    @MessageMapping("/startGame")
+    fun createGame(@Payload gameId: UUID) {
+        gameService.startGame(gameId)
     }
 }
