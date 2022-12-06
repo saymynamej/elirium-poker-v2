@@ -2,12 +2,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.10"
-    kotlin("plugin.spring") version "1.6.21"
     application
 }
 
 group = "ru.smn.poker"
 version = "1.0-SNAPSHOT"
+
 val springBootVersion: String by project
 
 repositories {
@@ -15,13 +15,10 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":elirium-combination-lib"))
-    implementation(project(":elirium-common"))
-    implementation(project(":elirium-core"))
-    implementation("org.springframework.boot:spring-boot-starter-websocket:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
-
+    implementation("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
+    implementation("org.projectlombok:lombok:1.18.22")
+    annotationProcessor("org.projectlombok:lombok:1.18.22")
     testImplementation(kotlin("test"))
 }
 

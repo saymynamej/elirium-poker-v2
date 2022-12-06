@@ -15,13 +15,8 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":elirium-combination-lib"))
-    implementation(project(":elirium-common"))
-    implementation(project(":elirium-core"))
-    implementation("org.springframework.boot:spring-boot-starter-websocket:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
-
+    implementation(project(":elirium-common"))
     testImplementation(kotlin("test"))
 }
 

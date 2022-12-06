@@ -10,7 +10,7 @@
 gradle/
 build/
 */build/
-
+json/
 /.gradle/
 /gradle/
 /build/
