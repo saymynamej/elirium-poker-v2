@@ -6,7 +6,7 @@ import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.web.bind.annotation.RestController
 import ru.smn.poker.actions.ActionRequest
 import ru.smn.poker.actions.ActionResponse
-import ru.smn.poker.actions.ActionService
+import ru.smn.poker.core.ActionService
 import ru.smn.poker.core.GameService
 import ru.smn.poker.game.CreateGameRequest
 import ru.smn.poker.game.CreateGameResponse

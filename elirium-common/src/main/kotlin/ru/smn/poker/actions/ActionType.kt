@@ -6,5 +6,17 @@ enum class ActionType {
     RAISE,
     ALL_IN,
     CHECK,
-    MOCK
+    MOCK;
+
+    fun toAction(count: Long = 0): Action {
+        return when (this) {
+            CALL -> CallAction(count)
+            RAISE -> RaiseAction(count)
+            CHECK -> CheckAction(count)
+            BET -> BetAction(count)
+            ALL_IN -> AllinAction(count)
+            MOCK -> MockAction()
+        }
+    }
+
 }
