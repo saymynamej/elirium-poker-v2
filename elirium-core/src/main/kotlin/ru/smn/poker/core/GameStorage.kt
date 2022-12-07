@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-class GameStorage(val games: MutableList<GameCore>) {
+class GameStorage(
+    val games: MutableList<GameCore>
+) {
 
     fun add(gameCore: GameCore) {
         games.add(gameCore)

@@ -5,12 +5,10 @@ import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.web.bind.annotation.RestController
 import ru.smn.poker.actions.ActionRequest
-import ru.smn.poker.actions.ActionResponse
 import ru.smn.poker.core.ActionService
 import ru.smn.poker.core.GameService
 import ru.smn.poker.game.CreateGameRequest
-import ru.smn.poker.game.CreateGameResponse
-import java.util.UUID
+import ru.smn.poker.game.StartGameRequest
 
 @RestController
 class WebSocketController(
@@ -19,19 +17,14 @@ class WebSocketController(
 ) {
     @SendTo("/poker/games")
     @MessageMapping("/game/create")
-    fun createGame(@Payload createGame: CreateGameRequest): CreateGameResponse {
-        return gameService.createGame(createGame)
-    }
+    fun createGame(@Payload createGame: CreateGameRequest) = gameService.createGame(createGame)
 
     @SendTo("/poker/actions")
     @MessageMapping("/game/action")
-    fun doAction(@Payload actionRequest: ActionRequest): ActionResponse {
-        return actionService.doAction(actionRequest)
-    }
+    fun doAction(@Payload actionRequest: ActionRequest) = actionService.doAction(actionRequest)
 
     @SendTo("/poker/games")
-    @MessageMapping("/startGame")
-    fun createGame(@Payload gameId: UUID) {
-        gameService.startGame(gameId)
-    }
+    @MessageMapping("/game/start")
+    fun startGame(@Payload startGameRequest: StartGameRequest) = gameService.startGame(startGameRequest)
+
 }

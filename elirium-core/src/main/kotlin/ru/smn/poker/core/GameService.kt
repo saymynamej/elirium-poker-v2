@@ -2,10 +2,11 @@ package ru.smn.poker.core
 
 import ru.smn.poker.game.CreateGameRequest
 import ru.smn.poker.game.CreateGameResponse
-import java.util.UUID
+import ru.smn.poker.game.StartGameRequest
+import ru.smn.poker.game.StartGameResponse
 
 
 interface GameService {
     fun createGame(createGameRequest: CreateGameRequest): CreateGameResponse
-    fun startGame(gameId: UUID)
+    fun startGame(startGameRequest: StartGameRequest): StartGameResponse
 }

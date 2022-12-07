@@ -11,7 +11,7 @@ class InstanceService(val gameStorage: GameStorage) {
     fun findInstance(name: String): Instance {
         return gameStorage.games
             .flatMap { game -> game.instances }
-            .first { instance -> instance.name == name }
+            .first { instance -> instance.instanceName == name }
     }
 
     fun addInstance(gameId: UUID, instance: Instance) {

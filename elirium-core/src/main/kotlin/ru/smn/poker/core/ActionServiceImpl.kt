@@ -9,8 +9,12 @@ class ActionServiceImpl(private val gameStorage: GameStorage) : ActionService {
         val game = gameStorage.games
             .first { game -> game.gameId == actionRequest.gameId }
 
-        game.lastAction = actionRequest.actionType.toAction(actionRequest.count)
+        game.lastAction(actionRequest)
 
-        return ActionResponse(actionRequest.count, actionRequest.playerName)
+        return ActionResponse(
+            actionRequest.count,
+            game.gameId,
+            actionRequest.instanceName
+        )
     }
 }
