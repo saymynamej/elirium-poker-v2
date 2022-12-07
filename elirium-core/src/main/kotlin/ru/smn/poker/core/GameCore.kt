@@ -13,6 +13,7 @@ import java.util.*
 
 class GameCore(
     private var lastAction: Action = MockAction(),
+    val gameHandler: GameHandler,
     val gameId: UUID,
     val instances: MutableList<Instance>
 ) {
@@ -24,6 +25,7 @@ class GameCore(
             .forEach { instance ->
                 instance.active = true
                 await().until { lastAction.actionType() != ActionType.MOCK }
+                gameHandler.handle(this.lastAction, instance)
                 instance.active = false
             }
     }

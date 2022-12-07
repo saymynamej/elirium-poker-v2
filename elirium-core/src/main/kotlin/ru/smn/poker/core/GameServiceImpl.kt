@@ -20,7 +20,11 @@ class GameServiceImpl(
         val gameId = UUID.randomUUID()
 
         with(gameStorage) {
-            add(GameCore(gameId = gameId, instances = mutableListOf()))
+            add(GameCore(
+                gameId = gameId,
+                instances = mutableListOf(),
+                gameHandler = GameHandlerImpl())
+            )
         }
 
         EliriumLogger(
