@@ -3,39 +3,40 @@ package ru.smn.poker
 import ru.smn.poker.actions.Role
 import ru.smn.poker.dto.Instance
 
+private const val NOT_FOUND_INDEX: Int = -1
+
 fun List<Instance>.getNextIndexForRole(role: Role): Int {
     return this.indexOfFirst { instance -> instance.role == role }.run {
-        if (this == lastIndex) {
-            return@run 0
-        }
+        if (this == lastIndex) return@run 0
+        if (this == NOT_FOUND_INDEX) return NOT_FOUND_INDEX
         return@run this.inc()
     }
 }
 
-fun List<Instance>.hasRole(vararg role: Role): Boolean {
+fun List<Instance>.anyHasRoles(vararg role: Role): Boolean {
     return this.map { instance -> instance.role }
         .any { pos -> role.contains(pos) }
+}
+
+fun List<Instance>.allHasRole(role: Role): Boolean {
+    return this.map { instance -> instance.role }
+        .any { pos -> role == pos }
 }
 
 fun MutableList<Instance>.distributeRoles(): MutableList<Instance> {
     if (this.isEmpty() || this.size < 2) throw RuntimeException("list is not enough size")
 
-    if (!hasRole(Role.BUTTON, Role.SMALL_BLIND, Role.BIG_BLIND)) {
-        return apply {
-            this[0].role = Role.BUTTON
-            this[1].role = Role.SMALL_BLIND
-            this[2].role = Role.BIG_BLIND
+    if (allHasRole(Role.EMPTY)) {
+        this.forEachIndexed { index, instance ->
+            instance.role = Role.findByGrade(index)
         }
+        return this
     }
 
-    val nextIndexForButton = getNextIndexForRole(Role.BUTTON)
-    val nextIndexForSmallBlind = getNextIndexForRole(Role.SMALL_BLIND)
-    val nextIndexForBigBlind = getNextIndexForRole(Role.BIG_BLIND)
+    Role.values()
+        .map { role -> role to getNextIndexForRole(role) }
+        .filter { it.second != NOT_FOUND_INDEX }
+        .forEach { this[it.second].role = it.first }
 
-    this.forEach { instance -> instance.role = Role.EMPTY }
-
-    this[nextIndexForButton].role = Role.BUTTON
-    this[nextIndexForSmallBlind].role = Role.SMALL_BLIND
-    this[nextIndexForBigBlind].role = Role.BIG_BLIND
     return this
 }

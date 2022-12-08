@@ -21,18 +21,13 @@ class GameCore(
 ) {
     fun start() {
         EliriumLogger("game started. id = $gameId").print()
-            //Установить роли если их еще нету
-           //Далее крутить баттон сб и бб
         this.instances
             .distributeRoles()
             .forEach { instance ->
-                instance.active = true
                 await()
                     .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
                     .until { lastAction.actionType() != ActionType.MOCK }
                 gameHandler.handle(this.lastAction, instance)
-                instance.active = false
-                this.lastAction = mockAction
             }
     }
 
