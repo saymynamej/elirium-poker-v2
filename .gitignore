@@ -10,6 +10,7 @@
 gradle/
 build/
 */build/
+*/node_modules/
 json/
 /.gradle/
 /gradle/
