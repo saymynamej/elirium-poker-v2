@@ -12,10 +12,10 @@ import java.util.*
 
 @Service
 class GameServiceImpl(
-    val gameStorage: GameStorage
+    val gameStorage: GameStorage,
 ) : GameService {
     override fun createGame(createGameRequest: CreateGameRequest): CreateGameResponse {
-        val gameId = UUID.randomUUID()
+        val gameId = createGameRequest.gameId ?: UUID.randomUUID()
 
         with(gameStorage) {
             add(

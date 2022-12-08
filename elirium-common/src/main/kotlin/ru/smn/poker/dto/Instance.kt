@@ -9,7 +9,8 @@ data class Instance(
     var active: Boolean = false,
     var timeBank: Int = 120,
     var role: Role = Role.EMPTY,
-    var history: Map<Stage, MutableList<Action>> = Stage.values().associateBy({ it }, { mutableListOf() }),
+    var history: Map<Stage, MutableList<Action>> = Stage.values()
+        .associateBy({ it }, { mutableListOf() }),
     var cards: List<Card> = listOf(),
     var chips: Long = 0,
 )

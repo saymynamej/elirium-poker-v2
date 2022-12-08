@@ -8,6 +8,7 @@ import ru.smn.poker.dto.Instance
 import ru.smn.poker.game.CreateGameRequest
 import ru.smn.poker.game.GameType
 import ru.smn.poker.game.StartGameRequest
+import java.util.UUID
 
 @Service
 class AddMockInstances(
@@ -16,10 +17,10 @@ class AddMockInstances(
 ) {
     @PostConstruct
     fun createMockGameAndInstances() {
+        val gameId = UUID.fromString("0040073d-2634-4f1d-8bc9-e1aa2ab20740")
         val createGameResponse = gameService.createGame(
-            CreateGameRequest(GameType.HOLDEM, 9)
+            CreateGameRequest(GameType.HOLDEM, 9, gameId)
         )
-        val gameId = createGameResponse.gameId
         instanceService.addInstance(gameId, Instance("1", chips = 5000))
         instanceService.addInstance(gameId, Instance("2", chips = 5000))
         instanceService.addInstance(gameId, Instance("3", chips = 5000))

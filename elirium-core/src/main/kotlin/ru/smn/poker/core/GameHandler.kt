@@ -1,10 +1,10 @@
 package ru.smn.poker.core
 
 import ru.smn.poker.actions.Action
-import ru.smn.poker.dto.Data
+import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
 
 interface GameHandler {
-    fun handle(data: Data, action: Action, instance: Instance)
-    fun handleBlinds(data: Data, instances: MutableList<Instance>)
+    fun handle(deal: Deal, action: Action, instance: Instance)
+    fun handleBlinds(deal: Deal, instances: MutableList<Instance>)
 }

@@ -2,8 +2,20 @@ package ru.smn.poker
 
 import ru.smn.poker.actions.Role
 import ru.smn.poker.dto.Instance
+import ru.smn.poker.dto.Stage
 
 private const val NOT_FOUND_INDEX: Int = -1
+
+
+fun List<Instance>.everyOneHasTheSameBet(stage: Stage): Boolean {
+    val bets = this.map { instance ->
+        instance.history[stage]
+    }.map { actions ->
+        actions!!.sumOf { action -> action.count() }
+    }
+    val distinct = bets.distinct()
+    return distinct.size == 1 && distinct[0] != 0L
+}
 
 fun List<Instance>.getNextIndexForRole(role: Role): Int {
     return this.indexOfFirst { instance -> instance.role == role }.run {
