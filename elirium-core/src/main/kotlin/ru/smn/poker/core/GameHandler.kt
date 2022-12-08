@@ -6,4 +6,5 @@ import ru.smn.poker.dto.Instance
 
 interface GameHandler {
     fun handle(data: Data, action: Action, instance: Instance)
+    fun handleBlinds(data: Data, instances: MutableList<Instance>)
 }

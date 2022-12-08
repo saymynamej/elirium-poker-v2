@@ -1,6 +1,6 @@
 package ru.smn.poker.dto
 enum class Stage {
-    PREFLOP,
+    PRE_FLOP,
     FLOP,
     TERN,
     RIVER

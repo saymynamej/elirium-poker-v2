@@ -19,24 +19,25 @@ class GameCore(
     private val active: Boolean = true,
     private val gameHandler: GameHandler,
     val gameId: UUID,
-    val instances: MutableList<Instance>
+    val instances: MutableList<Instance>,
 ) {
     fun start() {
         EliriumLogger("game started. id = $gameId").print()
         while (active) {
             val data = Data(gameId)
-            this.instances
-                .distributeRoles()
-                .forEach { instance ->
-                    instance.active = true
-                    EliriumLogger("active player: $instance").print()
-                    await()
-                        .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
-                        .until { lastAction.actionType() != ActionType.MOCK }
-                    gameHandler.handle(data, this.lastAction, instance)
-                    this.lastAction = mockAction
-                    instance.active = false
-                }
+            val distributeRoles = this.instances.distributeRoles()
+            gameHandler.handleBlinds(data, instances)
+
+            distributeRoles.forEach { instance ->
+                instance.active = true
+                EliriumLogger("active player: $instance").print()
+                await()
+                    .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
+                    .until { lastAction.actionType() != ActionType.MOCK }
+                gameHandler.handle(data, this.lastAction, instance)
+                this.lastAction = mockAction
+                instance.active = false
+            }
         }
         EliriumLogger("game stopped. id = $gameId").print()
     }
