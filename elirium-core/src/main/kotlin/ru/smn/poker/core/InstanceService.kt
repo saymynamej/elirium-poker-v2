@@ -8,15 +8,8 @@ import java.util.*
 @Service
 class InstanceService(val gameStorage: GameStorage) {
 
-    fun findInstance(name: String): Instance {
-        return gameStorage.games
-            .flatMap { game -> game.instances }
-            .first { instance -> instance.instanceName == name }
-    }
-
     fun addInstance(gameId: UUID, instance: Instance) {
-        gameStorage.games
-            .first { game -> game.gameId == gameId }
+        gameStorage.getById(gameId)
             .addInstance(instance)
     }
 }

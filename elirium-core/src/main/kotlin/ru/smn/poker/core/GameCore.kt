@@ -9,31 +9,37 @@ import ru.smn.poker.distributeRoles
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.log.EliriumLogger
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class GameCore(
-    private var lastAction: Action = MockAction(),
+    private val mockAction: MockAction = MockAction(),
+    private var lastAction: Action = mockAction,
     val gameHandler: GameHandler,
     val gameId: UUID,
     val instances: MutableList<Instance>
 ) {
     fun start() {
         EliriumLogger("game started. id = $gameId").print()
+            //Установить роли если их еще нету
+           //Далее крутить баттон сб и бб
         this.instances
-            .shuffled()
             .distributeRoles()
             .forEach { instance ->
                 instance.active = true
-                await().until { lastAction.actionType() != ActionType.MOCK }
+                await()
+                    .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
+                    .until { lastAction.actionType() != ActionType.MOCK }
                 gameHandler.handle(this.lastAction, instance)
                 instance.active = false
+                this.lastAction = mockAction
             }
     }
 
     fun lastAction(actionRequest: ActionRequest) {
         val activeInstance = instances.first { instance -> instance.active }
         if (activeInstance.instanceName != actionRequest.instanceName)
-            throw RuntimeException("activeInstance has other name")
+            throw RuntimeException("active instance has other name")
         val action = actionRequest.actionType.toAction(actionRequest.count)
         this.lastAction = action
     }

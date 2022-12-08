@@ -1,7 +1,6 @@
 package ru.smn.poker.core
 
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
 import ru.smn.poker.game.CreateGameRequest
@@ -15,33 +14,34 @@ import java.util.*
 class GameServiceImpl(
     val gameStorage: GameStorage
 ) : GameService {
-    private val runGames: MutableMap<UUID, Job> = mutableMapOf()
     override fun createGame(createGameRequest: CreateGameRequest): CreateGameResponse {
         val gameId = UUID.randomUUID()
 
         with(gameStorage) {
-            add(GameCore(
-                gameId = gameId,
-                instances = mutableListOf(),
-                gameHandler = GameHandlerImpl())
+            add(
+                GameCore(
+                    gameId = gameId,
+                    instances = mutableListOf(),
+                    gameHandler = GameHandlerImpl()
+                )
             )
         }
 
-        EliriumLogger(
-            message = "game created. id: $gameId"
-        ).print()
+        EliriumLogger(message = "game created. id: $gameId").print()
 
         return CreateGameResponse(true, createGameRequest.countOfPlayer, gameId)
     }
 
     override fun startGame(startGameRequest: StartGameRequest): StartGameResponse {
         val gameId = startGameRequest.gameId
+        val game = gameStorage.getById(gameId)
+
         val job = GlobalScope.launch {
-            gameStorage.games
-                .first { game -> game.gameId == gameId }
-                .start()
+            game.start()
         }
-        this.runGames[gameId] = job
+
+        gameStorage.addJob(game, job)
+
         return StartGameResponse(gameId)
     }
 }

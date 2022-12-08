@@ -15,6 +15,7 @@ class WebSocketController(
     private val gameService: GameService,
     private val actionService: ActionService
 ) {
+
     @SendTo("/poker/games")
     @MessageMapping("/game/create")
     fun createGame(@Payload createGame: CreateGameRequest) = gameService.createGame(createGame)

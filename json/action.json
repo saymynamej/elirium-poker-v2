@@ -1,5 +1,6 @@
 {
   "count": 1000,
   "actionType": "CALL",
-  "playerName": "TEST"
+  "instanceName": "1",
+  "gameId": "008481a4-f9fb-4424-a4eb-6daa8bb0778f"
 }

@@ -1,10 +1,11 @@
 package ru.smn.poker.dto
 
-import ru.smn.poker.actions.Position
+import ru.smn.poker.actions.Role
 
 
 class Instance(
     val instanceName: String,
-    var active: Boolean,
-    var position: Position = Position.EMPTY
+    var active: Boolean = false,
+    var timeBank: Int = 120,
+    var role: Role = Role.EMPTY
 )
