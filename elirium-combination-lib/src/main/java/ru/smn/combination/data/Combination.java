@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 public class Combination {
     private final CombinationType combinationType;
-    private final List<CardType> cards;
+    private final List<Card> cards;
     private final Integer power;
 
     public static Combination empty() {
@@ -24,14 +24,14 @@ public class Combination {
                 .build();
     }
 
-    public static Combination of(CombinationType type, List<CardType> cards) {
+    public static Combination of(CombinationType type, List<Card> cards) {
         return Combination.builder()
                 .combinationType(type)
                 .cards(cards)
                 .build();
     }
 
-    public static Combination of(CombinationType type, List<CardType> cards, Integer power) {
+    public static Combination of(CombinationType type, List<Card> cards, Integer power) {
         return Combination.builder()
                 .combinationType(type)
                 .cards(cards)

@@ -1,7 +1,7 @@
 package ru.smn.combination;
 
 import org.springframework.stereotype.Service;
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 import ru.smn.combination.strategy.search.SearchAssistant;
@@ -16,7 +16,7 @@ import static ru.smn.combination.data.CardSizeData.COMBINATION_SIZE;
 public class ClassicCombinationService implements CombinationService {
 
     @Override
-    public Combination findCombination(List<CardType> cards) {
+    public Combination findCombination(List<Card> cards) {
         if (cards.size() < COMBINATION_SIZE) {
             throw new RuntimeException("cards size cannot be less than " + COMBINATION_SIZE);
         }

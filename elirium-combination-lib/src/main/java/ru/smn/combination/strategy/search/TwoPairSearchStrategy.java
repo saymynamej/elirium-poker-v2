@@ -1,6 +1,6 @@
 package ru.smn.combination.strategy.search;
 
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 
@@ -15,12 +15,12 @@ import static ru.smn.combination.utils.CardUtils.findTheBiggestCardIgnoringFilte
 class TwoPairSearchStrategy implements SearchStrategy {
 
     @Override
-    public Combination find(List<CardType> cards) {
-        final List<CardType> twoPairs = cards.stream()
-                .collect(Collectors.groupingBy(CardType::getPowerAsInt))
+    public Combination find(List<Card> cards) {
+        final List<Card> twoPairs = cards.stream()
+                .collect(Collectors.groupingBy(Card::getPowerAsInt))
                 .entrySet().stream()
                 .filter(entry -> entry.getValue().size() == PAIR_SIZE)
-                .sorted(Map.Entry.<Integer, List<CardType>>comparingByKey().reversed())
+                .sorted(Map.Entry.<Integer, List<Card>>comparingByKey().reversed())
                 .limit(2)
                 .flatMap(entry -> entry.getValue().stream())
                 .collect(Collectors.toList());

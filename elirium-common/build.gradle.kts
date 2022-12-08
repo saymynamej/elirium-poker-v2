@@ -16,6 +16,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
+    implementation(project(":elirium-combination-lib"))
     testImplementation(kotlin("test"))
 }
 

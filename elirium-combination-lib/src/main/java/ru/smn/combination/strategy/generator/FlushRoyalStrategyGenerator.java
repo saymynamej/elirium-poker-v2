@@ -1,6 +1,6 @@
 package ru.smn.combination.strategy.generator;
 
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 import ru.smn.combination.data.PowerType;
@@ -13,11 +13,11 @@ class FlushRoyalStrategyGenerator implements GeneratorStrategy {
 
     @Override
     public Combination generate() {
-        final List<CardType> cards = CardType.getAllCardsAsList();
+        final List<Card> cards = Card.getAllCardsAsList();
 
-        final CardType.SuitType suitForFlushRoyal = RandomUtils.getRandomSuit();
+        final Card.SuitType suitForFlushRoyal = RandomUtils.getRandomSuit();
 
-        final List<CardType> flushRoyal = cards.stream()
+        final List<Card> flushRoyal = cards.stream()
                 .filter(cardType -> cardType.getSuitType().equals(suitForFlushRoyal))
                 .takeWhile(cardType -> cardType.getPower().getPowerAsInt() >= PowerType.TEN_POWER.getPowerAsInt())
                 .collect(Collectors.toList());

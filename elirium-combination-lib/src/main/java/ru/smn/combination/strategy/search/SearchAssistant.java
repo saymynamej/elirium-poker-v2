@@ -1,6 +1,6 @@
 package ru.smn.combination.strategy.search;
 
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 
@@ -26,7 +26,7 @@ public class SearchAssistant {
         searchStrategies.put(CombinationType.FLUSH_ROYAL, new FlushRoyalSearchStrategy());
     }
 
-    public static Combination find(CombinationType combinationType, List<CardType> cards) {
+    public static Combination find(CombinationType combinationType, List<Card> cards) {
         final SearchStrategy searchStrategy = searchStrategies.get(combinationType);
         final Combination combination = searchStrategy.find(cards);
         if (combination.isEmpty()) {

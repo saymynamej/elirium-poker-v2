@@ -1,7 +1,7 @@
 package ru.smn.combination.strategy.search;
 
 import ru.smn.combination.data.CardSizeData;
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 
@@ -13,11 +13,11 @@ import static ru.smn.combination.utils.CardUtils.findTheBiggestCardIgnoringFilte
 class KareSearchStrategy implements SearchStrategy {
 
     @Override
-    public Combination find(List<CardType> cards) {
+    public Combination find(List<Card> cards) {
         final int firstIndexOfCard = 0;
 
-        final List<CardType> kareCards = cards.stream()
-                .collect(Collectors.groupingBy(CardType::getPowerAsInt))
+        final List<Card> kareCards = cards.stream()
+                .collect(Collectors.groupingBy(Card::getPowerAsInt))
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().size() == CardSizeData.KARE_SIZE)

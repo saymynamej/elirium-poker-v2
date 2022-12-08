@@ -1,6 +1,6 @@
 package ru.smn.combination.strategy.search;
 
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 import ru.smn.combination.data.PowerType;
@@ -19,7 +19,7 @@ import static ru.smn.combination.utils.CardUtils.findPowerOfCardWithFilter;
 class FullHouseSearchStrategy implements SearchStrategy {
 
     @Override
-    public Combination find(List<CardType> cards) {
+    public Combination find(List<Card> cards) {
         final Predicate<Map.Entry<PowerType, Long>> conditionForThreeCards = (powerType) -> powerType.getValue() == 3;
         final Optional<PowerType> threeRepeats = findPowerOfCardWithFilter(cards, conditionForThreeCards);
 
@@ -34,17 +34,17 @@ class FullHouseSearchStrategy implements SearchStrategy {
             return Combination.empty();
         }
 
-        final List<CardType> threeCards = cards.stream()
+        final List<Card> threeCards = cards.stream()
                 .filter(cardType -> cardType.getPower().equals(threeRepeats.get()))
                 .limit(THREE_SIZE)
                 .toList();
 
-        final List<CardType> twoCards = cards.stream()
+        final List<Card> twoCards = cards.stream()
                 .filter(cardType -> cardType.getPower().equals(twoOrMore.get()))
                 .limit(PAIR_SIZE)
                 .toList();
 
-        final List<CardType> combination = Stream.concat(threeCards.stream(), twoCards.stream()).collect(Collectors.toList());
+        final List<Card> combination = Stream.concat(threeCards.stream(), twoCards.stream()).collect(Collectors.toList());
 
         final CombinationType fullHouse = CombinationType.FULL_HOUSE;
 

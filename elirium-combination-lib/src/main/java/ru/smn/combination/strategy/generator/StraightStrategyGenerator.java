@@ -1,7 +1,7 @@
 package ru.smn.combination.strategy.generator;
 
 import ru.smn.combination.data.CardSizeData;
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 import ru.smn.combination.utils.RandomUtils;
@@ -13,10 +13,10 @@ class StraightStrategyGenerator implements GeneratorStrategy {
 
     @Override
     public Combination generate() {
-        final List<CardType> cards = CardType.getAllCardsAsList();
-        final CardType randomCard = RandomUtils.getRandomCard(cards);
+        final List<Card> cards = Card.getAllCardsAsList();
+        final Card randomCard = RandomUtils.getRandomCard(cards);
 
-        final List<CardType> straight = cards.stream()
+        final List<Card> straight = cards.stream()
                 .filter(cardType -> cardType.getPower() != randomCard.getPower())
                 .filter(cardType -> cardType.getPowerAsInt() - randomCard.getPowerAsInt() < CardSizeData.COMBINATION_SIZE)
                 .filter(cardType -> !cardType.getSuitType().equals(randomCard.getSuitType()))

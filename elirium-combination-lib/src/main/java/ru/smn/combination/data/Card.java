@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ru.smn.combination.data.CardType.SuitType.*;
+import static ru.smn.combination.data.Card.SuitType.*;
 import static ru.smn.combination.data.PowerType.*;
 
 
-public enum CardType {
+public enum Card {
     A_D(A_POWER, DIAMOND),
     K_D(K_POWER, DIAMOND),
     Q_D(Q_POWER, DIAMOND),
@@ -69,17 +69,17 @@ public enum CardType {
     @Getter
     private final SuitType suitType;
 
-    CardType(PowerType powerType, SuitType suitType) {
+    Card(PowerType powerType, SuitType suitType) {
         this.power = powerType;
         this.suitType = suitType;
     }
 
-    public static List<CardType> getAllCardsAsList() {
+    public static List<Card> getAllCardsAsList() {
         return Arrays.stream(values())
                 .collect(Collectors.toList());
     }
 
-    public static List<CardType> getAllCardsAsListWithFilter(List<CardType> filter) {
+    public static List<Card> getAllCardsAsListWithFilter(List<Card> filter) {
         return getAllCardsAsList().stream()
                 .filter(card -> !filter.contains(card))
                 .collect(Collectors.toList());

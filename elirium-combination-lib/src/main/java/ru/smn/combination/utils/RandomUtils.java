@@ -1,6 +1,6 @@
 package ru.smn.combination.utils;
 
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 
 import java.util.List;
 import java.util.Random;
@@ -8,12 +8,12 @@ import java.util.Random;
 public class RandomUtils {
     public final static Random random = new Random();
 
-    public static CardType.SuitType getRandomSuit() {
-        final CardType.SuitType[] values = CardType.SuitType.values();
+    public static Card.SuitType getRandomSuit() {
+        final Card.SuitType[] values = Card.SuitType.values();
         return values[random.nextInt(values.length)];
     }
 
-    public static CardType getRandomCard(List<CardType> cards) {
+    public static Card getRandomCard(List<Card> cards) {
         return cards.get(random.nextInt(cards.size()));
     }
 }

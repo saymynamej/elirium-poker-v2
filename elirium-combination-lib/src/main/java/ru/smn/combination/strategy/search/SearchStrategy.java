@@ -1,6 +1,6 @@
 package ru.smn.combination.strategy.search;
 
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 
 import java.util.List;
@@ -14,5 +14,5 @@ interface SearchStrategy {
      * @param cards must have five or more cards for find
      * @return Poker combination if it was found otherwise empty
      */
-    Combination find(List<CardType> cards);
+    Combination find(List<Card> cards);
 }

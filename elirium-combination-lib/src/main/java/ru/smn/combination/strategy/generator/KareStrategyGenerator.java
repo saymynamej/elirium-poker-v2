@@ -1,6 +1,6 @@
 package ru.smn.combination.strategy.generator;
 
-import ru.smn.combination.data.CardType;
+import ru.smn.combination.data.Card;
 import ru.smn.combination.data.Combination;
 import ru.smn.combination.data.CombinationType;
 import ru.smn.combination.utils.CardUtils;
@@ -12,15 +12,15 @@ class KareStrategyGenerator implements GeneratorStrategy {
 
     @Override
     public Combination generate() {
-        final List<CardType> cards = CardType.getAllCardsAsList();
+        final List<Card> cards = Card.getAllCardsAsList();
 
-        final CardType randomCardForKare = RandomUtils.getRandomCard(cards);
+        final Card randomCardForKare = RandomUtils.getRandomCard(cards);
 
-        final List<CardType> kare = CardUtils.getCardsWithPower(cards, randomCardForKare.getPower(), 4);
+        final List<Card> kare = CardUtils.getCardsWithPower(cards, randomCardForKare.getPower(), 4);
 
         CardUtils.removeCardsWithPower(cards, randomCardForKare.getPower());
 
-        final CardType highCard = RandomUtils.getRandomCard(cards);
+        final Card highCard = RandomUtils.getRandomCard(cards);
 
         kare.add(highCard);
 
