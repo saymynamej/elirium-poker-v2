@@ -6,6 +6,7 @@ import ru.smn.poker.actions.ActionRequest
 import ru.smn.poker.actions.ActionType
 import ru.smn.poker.actions.MockAction
 import ru.smn.poker.distributeRoles
+import ru.smn.poker.dto.Data
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.log.EliriumLogger
 import java.util.*
@@ -16,13 +17,14 @@ class GameCore(
     private val mockAction: MockAction = MockAction(),
     private var lastAction: Action = mockAction,
     private val active: Boolean = true,
-    val gameHandler: GameHandler,
+    private val gameHandler: GameHandler,
     val gameId: UUID,
-    val instances: MutableList<Instance>,
+    val instances: MutableList<Instance>
 ) {
     fun start() {
         EliriumLogger("game started. id = $gameId").print()
         while (active) {
+            val data = Data(gameId)
             this.instances
                 .distributeRoles()
                 .forEach { instance ->
@@ -31,7 +33,7 @@ class GameCore(
                     await()
                         .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
                         .until { lastAction.actionType() != ActionType.MOCK }
-                    gameHandler.handle(this.lastAction, instance)
+                    gameHandler.handle(data, this.lastAction, instance)
                     this.lastAction = mockAction
                     instance.active = false
                 }

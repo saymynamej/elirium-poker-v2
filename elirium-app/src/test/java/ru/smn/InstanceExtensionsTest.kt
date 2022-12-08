@@ -1,10 +1,12 @@
 package ru.smn
 
 import org.junit.jupiter.api.Test
+import ru.smn.poker.actions.Action
 import ru.smn.poker.actions.Role
 import ru.smn.poker.anyHasRoles
 import ru.smn.poker.distributeRoles
 import ru.smn.poker.dto.Instance
+import ru.smn.poker.dto.Stage
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 

@@ -12,7 +12,7 @@ import ru.smn.poker.game.StartGameRequest
 @Service
 class AddMockInstances(
     private val gameService: GameService,
-    private val instanceService: InstanceService
+    private val instanceService: InstanceService,
 ) {
     @PostConstruct
     fun createMockGameAndInstances() {
@@ -20,9 +20,9 @@ class AddMockInstances(
             CreateGameRequest(GameType.HOLDEM, 9)
         )
         val gameId = createGameResponse.gameId
-        instanceService.addInstance(gameId, Instance("1"))
-        instanceService.addInstance(gameId, Instance("2"))
-        instanceService.addInstance(gameId, Instance("3"))
+        instanceService.addInstance(gameId, Instance("1", chips = 5000))
+        instanceService.addInstance(gameId, Instance("2", chips = 5000))
+        instanceService.addInstance(gameId, Instance("3", chips = 5000))
         gameService.startGame(StartGameRequest(gameId))
     }
 }
