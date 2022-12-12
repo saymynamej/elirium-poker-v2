@@ -1,8 +1,11 @@
 package ru.smn.poker.core
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
+import ru.smn.poker.dto.Deal
 import ru.smn.poker.game.CreateGameRequest
 import ru.smn.poker.game.CreateGameResponse
 import ru.smn.poker.game.StartGameRequest
@@ -36,7 +39,7 @@ class GameServiceImpl(
         val gameId = startGameRequest.gameId
         val game = gameStorage.getById(gameId)
 
-        val job = GlobalScope.launch {
+        val job = CoroutineScope(Dispatchers.IO).launch {
             game.start()
         }
 

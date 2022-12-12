@@ -1,15 +1,11 @@
 package ru.smn.poker.core
 
-import org.awaitility.Awaitility
-import ru.smn.poker.actions.ActionType
-import ru.smn.poker.actions.NoAction
-import ru.smn.poker.distributeRoles
+import ru.smn.combination.CardContainer
+import ru.smn.poker.*
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
-import ru.smn.poker.everyOneHasTheSameBet
 import ru.smn.poker.log.EliriumLogger
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class GameCore(
@@ -17,41 +13,69 @@ class GameCore(
     private val gameHandler: GameHandler,
     val gameId: UUID,
     val instances: MutableList<Instance>,
+    var deal: Deal = Deal(gameId),
 ) {
     fun start() {
-        EliriumLogger("game started. id = $gameId").print()
+        //Цикл игры
         while (active) {
-            val deal = Deal(gameId)
-            val instances = this.instances.distributeRoles()
-            gameHandler.handleBlinds(deal, this.instances)
-            while (deal.run) {
-                deal.stage.type = deal.stage.nextStage()
-                EliriumLogger("stage is:${deal.stage.type}").print()
+            /* Цикл Игры
+               * */
+            this.deal = buildDeal(instances)
+            while (true) {
+                val stage = deal.stage.type
+                EliriumLogger("stage: $stage is started")
+
+                val sortedInstances = instances.distributeRoles()
+                    .sortByStage(stage)
+
+                if (instances.everyoneInAllIn()) {
+                    continue
+                }
+                if (instances.isOnePlayerLeft()) {
+                    break
+                }
+                /* Цикл Раздачи. Условия для выхода.
+                   * 1. Все в олл ине
+                   * 2. Остался один игрок
+                   * */
                 while (true) {
-                    if (instances.everyOneHasTheSameBet(deal.stage.type)) {
+                    if (instances.everyoneHasTheSameBet(stage)) {
                         break
                     }
-                    for (instance in instances) {
-                        instance.active = true
-                        EliriumLogger("active player: $instance").print()
-
-                        Awaitility.await()
-                            .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
-                            .until { instance.action.actionType != ActionType.MOCK }
-
-                        instance.apply {
-                            gameHandler.handle(deal, action, this)
-                            action = NoAction()
-                            active = false
-                        }
+                    if (instances.everyoneInAllIn()) {
+                        continue
+                    }
+                    if (instances.isOnePlayerLeft()) {
+                        break
+                    }
+                    /* Цикл круга. Условия для выхода.
+                    * 1. Все кто не сфолдил уровнялись.
+                    * 2. Остался один игрок
+                    * 3. Все в олл ине
+                    * */
+                    sortedInstances.removeFolded().forEach { instance ->
+                        gameHandler.waitAndHandle(deal, instance.action, instance)
                     }
                 }
             }
         }
-        EliriumLogger("game stopped. id = $gameId").print()
     }
 
     fun addInstance(instance: Instance) {
         instances.add(instance)
     }
+
+    private fun buildDeal(instances: MutableList<Instance>): Deal {
+        val cardContainer = CardContainer()
+        return Deal(
+            gameId = gameId,
+            flop1 = cardContainer.retrieveRandomCard(),
+            flop2 = cardContainer.retrieveRandomCard(),
+            flop3 = cardContainer.retrieveRandomCard(),
+            tern = cardContainer.retrieveRandomCard(),
+            river = cardContainer.retrieveRandomCard()
+        )
+    }
+
+
 }

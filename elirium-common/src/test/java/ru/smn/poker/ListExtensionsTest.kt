@@ -21,7 +21,7 @@ class ListExtensionsTest {
                 Instance("test-02", history = history),
                 Instance("test-03", history = history),
                 Instance("test-04", history = history)
-            ).everyOneHasTheSameBet(Stage.PRE_FLOP)
+            ).everyoneHasTheSameBet(Stage.PRE_FLOP)
         }
     }
 
@@ -37,7 +37,7 @@ class ListExtensionsTest {
                 Instance("test-02", history = history),
                 Instance("test-03", history = history),
                 Instance("test-04", history = history)
-            ).everyOneHasTheSameBet(Stage.PRE_FLOP)
+            ).everyoneHasTheSameBet(Stage.PRE_FLOP)
         }
     }
 
@@ -57,7 +57,7 @@ class ListExtensionsTest {
                 Instance("test-02", history = secondHistory),
                 Instance("test-03", history = firstHistory),
                 Instance("test-04", history = secondHistory)
-            ).everyOneHasTheSameBet(Stage.PRE_FLOP)
+            ).everyoneHasTheSameBet(Stage.PRE_FLOP)
         }
     }
 }

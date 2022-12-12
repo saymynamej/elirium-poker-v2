@@ -5,6 +5,6 @@ import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
 
 interface GameHandler {
-    fun handle(deal: Deal, action: Action, instance: Instance)
+    fun waitAndHandle(deal: Deal, action: Action, instance: Instance)
     fun handleBlinds(deal: Deal, instances: MutableList<Instance>)
 }

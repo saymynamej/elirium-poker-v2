@@ -1,10 +1,10 @@
 package ru.smn.poker.actions
 
 data class CallAction(
-    val count: Long
+    val count: Long,
 ) : Action {
 
     override fun count() = this.count
 
-    override fun actionType() = ActionType.CALL
+    override val type = ActionType.CALL
 }

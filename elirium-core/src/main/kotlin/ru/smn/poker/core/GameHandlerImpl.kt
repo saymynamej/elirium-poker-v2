@@ -1,16 +1,27 @@
 package ru.smn.poker.core
 
+import org.awaitility.Awaitility
 import ru.smn.poker.actions.Action
+import ru.smn.poker.actions.ActionType
 import ru.smn.poker.actions.BetAction
 import ru.smn.poker.actions.Role
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.dto.Stage
 import ru.smn.poker.log.EliriumLogger
+import java.util.concurrent.TimeUnit
 
 class GameHandlerImpl : GameHandler {
+    private fun waitInstanceAction(instance: Instance) {
+        instance.active = true
+        Awaitility.await()
+            .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
+            .until { instance.action.type != ActionType.NO_ACTION }
+        instance.active = false
+    }
 
-    override fun handle(deal: Deal, action: Action, instance: Instance) {
+    override fun waitAndHandle(deal: Deal, action: Action, instance: Instance) {
+        waitInstanceAction(instance)
         deal.bank += action.count()
         instance.chips -= action.count()
         instance.history[deal.stage.type]!!.add(action)

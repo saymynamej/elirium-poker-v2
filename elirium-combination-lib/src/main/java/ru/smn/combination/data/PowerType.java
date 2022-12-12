@@ -14,7 +14,9 @@ public enum PowerType {
     FIVE_POWER(5),
     FOUR_POWER(4),
     THREE_POWER(3),
+
     TWO_POWER(2);
+
 
     private final int power;
 
