@@ -22,6 +22,7 @@ dependencies {
     implementation(project(":elirium-common"))
     implementation(project(":elirium-logger"))
     testImplementation(kotlin("test"))
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
 
 tasks.test {

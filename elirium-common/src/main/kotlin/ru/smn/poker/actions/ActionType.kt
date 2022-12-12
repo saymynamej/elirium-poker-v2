@@ -15,7 +15,7 @@ enum class ActionType {
             CHECK -> CheckAction(count)
             BET -> BetAction(count)
             ALL_IN -> AllinAction(count)
-            MOCK -> MockAction()
+            MOCK -> NoAction()
         }
     }
 

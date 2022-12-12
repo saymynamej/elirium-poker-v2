@@ -1,6 +1,6 @@
 package ru.smn.poker.actions
 
-class MockAction : Action {
+class NoAction : Action {
     override fun count() = 0L
     override fun actionType() = ActionType.MOCK
 }
