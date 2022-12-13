@@ -10,7 +10,9 @@ fun MutableList<Instance>.setUp(stage: Stage): MutableList<Instance> {
     return this.removeFolded()
         .sortByStage(stage)
         .also {
-            this.forEach { instance -> instance.action = NoAction() }
+            if (!this.everyoneInAllIn()) {
+                this.forEach { instance -> instance.action = NoAction() }
+            }
         }.toMutableList()
 }
 
@@ -26,7 +28,7 @@ fun MutableList<Instance>.everyoneInAllIn(): Boolean {
 
 
 fun MutableList<Instance>.isStageNotFinished(stage: Stage): Boolean {
-    return !this.everyoneHasTheSameBet(stage)
+    return !this.everyoneHasTheSameBet(stage) && !this.everyoneInAllIn()
 }
 
 fun MutableList<Instance>.everyoneHasTheSameBet(stage: Stage): Boolean {

@@ -66,9 +66,10 @@ class GameCoreTest {
         waitActiveAndDoAction(buttonInstance, gameId, AllinAction(1000))
         waitActiveAndDoAction(smallBlindInstance, gameId, AllinAction(999))
         waitActiveAndDoAction(bigBlindInstance, gameId, AllinAction(998))
-        waitUntil { game.deal.stage.type == Stage.FLOP }
-        waitUntil { game.deal.stage.type == Stage.TERN }
-        waitUntil { game.deal.stage.type == Stage.RIVER }
+//        waitUntil { game.deal.stage.type == Stage.FLOP }
+//        waitUntil { game.deal.stage.type == Stage.TERN }
+//        waitUntil { game.deal.stage.type == Stage.RIVER }
+        waitUntil { game.deal.finished }
     }
 
     @Test
