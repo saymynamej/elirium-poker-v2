@@ -21,13 +21,13 @@ class GameHandlerImpl : GameHandler {
 
     override suspend fun waitAndHandle(deal: Deal, instance: Instance) {
         instance.active = true
-        EliriumLogger("active player is: $instance").print()
+        EliriumLogger.print("active player is: $instance")
         waitInstanceAction(instance)
         val action = instance.action
         deal.bank += action.count()
         instance.chips -= action.count()
         instance.history[deal.stage.type]!!.add(action)
-        EliriumLogger("handle action: $action, by instance: $instance, data: $deal").print()
+        EliriumLogger.print("handle action: $action, by instance: $instance, data: $deal")
         instance.active = false
     }
 

@@ -11,7 +11,7 @@ class GameCore(
     val gameId: UUID,
     val instances: MutableList<Instance>,
     val deal: Deal = Deal(gameId),
-    var active: Boolean = false
+    var active: Boolean = false,
 ) {
     suspend fun start() {
         this.active = true
@@ -21,7 +21,7 @@ class GameCore(
             while (!deal.finished) {
                 val stage = deal.stage.type
                 instances = instances.setUp(stage)
-                EliriumLogger("stage: $stage is started").print()
+                EliriumLogger.print("stage: $stage is started")
                 val getInstanceForAction = instances.next()
                 while (instances.isStageNotFinished(stage)) {
                     gameHandler.waitAndHandle(deal, getInstanceForAction())

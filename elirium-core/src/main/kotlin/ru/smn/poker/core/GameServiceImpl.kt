@@ -31,7 +31,7 @@ class GameServiceImpl(
             )
         }
 
-        EliriumLogger(message = "game created. id: $gameId").print()
+        EliriumLogger.print("game created. id: $gameId")
 
         return CreateGameResponse(true, createGameRequest.countOfPlayer, gameId)
     }
