@@ -1,9 +1,9 @@
 package ru.smn.poker.dto
 
-import ru.smn.combination.data.Card
 import ru.smn.poker.actions.Action
 import ru.smn.poker.actions.NoAction
 import ru.smn.poker.actions.Role
+import ru.smn.poker.combination.data.Card
 
 data class Instance(
     val instanceName: String,
@@ -13,6 +13,6 @@ data class Instance(
     var role: Role = Role.EMPTY,
     var history: Map<Stage, MutableList<Action>> = Stage.values()
         .associateBy({ it }, { mutableListOf() }),
-    var cards: List<Card> = listOf(),
+    var cards: MutableList<Card> = mutableListOf(),
     var chips: Long = 0,
 )

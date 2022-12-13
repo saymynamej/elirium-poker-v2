@@ -2,11 +2,11 @@ package ru.smn.poker.core
 
 import kotlinx.coroutines.Job
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class GameStorage(
-    val games: MutableMap<GameCore, Job?> = mutableMapOf()
+    val games: MutableMap<GameCore, Job?> = mutableMapOf(),
 ) {
     fun getById(id: UUID): GameCore {
         return games.keys.first { game -> game.gameId == id }

@@ -1,7 +1,9 @@
 package ru.smn.poker.core
 
 import org.springframework.stereotype.Service
-import ru.smn.poker.actions.*
+import ru.smn.poker.actions.Action
+import ru.smn.poker.actions.ActionRequest
+import ru.smn.poker.actions.ActionResponse
 import java.util.*
 
 @Service

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import ru.smn.poker.actions.*
+import ru.smn.poker.combination.CardContainer
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.dto.Stage
 import ru.smn.poker.game.CreateGameRequest
@@ -24,7 +25,9 @@ import kotlin.test.assertTrue
         GameStorage::class,
         InstanceService::class,
         ActionServiceImpl::class,
-        GameServiceImpl::class
+        GameSetup::class,
+        GameHandlerImpl::class,
+        CardContainer::class
     ]
 )
 @ExtendWith(SpringExtension::class)
@@ -39,60 +42,45 @@ class GameCoreTest {
     @Autowired
     private lateinit var actionService: ActionService
 
-
     @Autowired
     private lateinit var gameStorage: GameStorage
 
     private val gameID = UUID.randomUUID()
 
     @Test
-    fun `should create and start game`() {
-        val createGameResponse = gameService.createGame(
-            CreateGameRequest(
-                GameType.HOLDEM,
-                6,
-                gameID
-            )
-        )
-        assertTrue(createGameResponse.success)
-        assertNotNull(createGameResponse.gameId)
-        val startGameResponse = gameService.startGame(StartGameRequest(gameId = gameID))
-        assertNotNull(startGameResponse.gameId)
+    fun `test with all in actions`() {
+        createDefaultGame()
+        val game = gameStorage.getById(gameID)
+        val gameId = game.gameId
+        waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+        assertEquals(Stage.PRE_FLOP, game.deal.stage.type)
+        assertEquals(Role.FIRST, firstInstance.role)
+        assertEquals(Role.BUTTON, buttonInstance.role)
+        assertEquals(Role.SMALL_BLIND, smallBlindInstance.role)
+        assertEquals(Role.BIG_BLIND, bigBlindInstance.role)
+        waitActiveAndDoAction(firstInstance, gameId, AllinAction(1000))
+        waitActiveAndDoAction(buttonInstance, gameId, AllinAction(1000))
+        waitActiveAndDoAction(smallBlindInstance, gameId, AllinAction(999))
+        waitActiveAndDoAction(bigBlindInstance, gameId, AllinAction(998))
+        waitUntil { game.deal.stage.type == Stage.FLOP }
+        waitUntil { game.deal.stage.type == Stage.TERN }
+        waitUntil { game.deal.stage.type == Stage.RIVER }
     }
 
     @Test
-    fun `should create and start game and do actions`() {
-        val createGameResponse = gameService.createGame(
-            CreateGameRequest(
-                GameType.HOLDEM,
-                6,
-                gameID
-            )
-        )
-        val gameId = createGameResponse.gameId
-        assertTrue(createGameResponse.success)
-        assertNotNull(gameId)
-
-        val buttonInstance = Instance("test-01")
-        val smallBlindInstance = Instance("test-02")
-        val bigBlindInstance = Instance("test-03")
-        val firstInstance = Instance("test-04")
-
-        with(instanceService) {
-            addInstances(
-                gameId,
-                listOf(
-                    buttonInstance,
-                    smallBlindInstance,
-                    bigBlindInstance,
-                    firstInstance
-                )
-            )
-        }
-
-        gameService.startGame(StartGameRequest(gameId = gameID))
-        val game = gameStorage.getById(gameId)
-        waitActive(firstInstance)
+    fun `test with call actions`() {
+        createDefaultGame()
+        val game = gameStorage.getById(gameID)
+        val gameId = game.gameId
+        waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
         assertEquals(Stage.PRE_FLOP, game.deal.stage.type)
         assertEquals(Role.FIRST, firstInstance.role)
         assertEquals(Role.BUTTON, buttonInstance.role)
@@ -117,40 +105,19 @@ class GameCoreTest {
         waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(1000))
         waitActiveAndDoAction(firstInstance, gameId, CallAction(1000))
         waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
+        waitUntil { game.deal.finished }
     }
 
-
     @Test
-    fun `should fold`() {
-        val createGameResponse = gameService.createGame(
-            CreateGameRequest(
-                GameType.HOLDEM,
-                6,
-                gameID
-            )
-        )
-        val gameId = createGameResponse.gameId
-        assertTrue(createGameResponse.success)
-        assertNotNull(gameId)
-
-        val buttonInstance = Instance("test-01")
-        val smallBlindInstance = Instance("test-02")
-        val bigBlindInstance = Instance("test-03")
-        val firstInstance = Instance("test-04")
-
-        with(instanceService) {
-            addInstances(
-                gameId,
-                listOf(
-                    buttonInstance, smallBlindInstance,
-                    bigBlindInstance, firstInstance
-                )
-            )
-        }
-
-        gameService.startGame(StartGameRequest(gameId = gameID))
-        val game = gameStorage.getById(gameId)
-        waitActive(firstInstance)
+    fun `test with fold actions`() {
+        createDefaultGame()
+        val game = gameStorage.getById(gameID)
+        val gameId = game.gameId
+        waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
         assertEquals(Stage.PRE_FLOP, game.deal.stage.type)
         assertEquals(Role.FIRST, firstInstance.role)
         assertEquals(Role.BUTTON, buttonInstance.role)
@@ -161,13 +128,53 @@ class GameCoreTest {
         waitActiveAndDoAction(smallBlindInstance, gameId, FoldAction())
         waitActiveAndDoAction(bigBlindInstance, gameId, FoldAction())
         waitUntil { game.deal.stage.type == Stage.FLOP }
-        waitActiveAndDoAction(buttonInstance, gameId, RaiseAction(1000))
+        waitActiveAndDoAction(firstInstance, gameId, BetAction(1000))
+        waitActiveAndDoAction(buttonInstance, gameId, BetAction(1000))
+        waitUntil { game.deal.stage.type == Stage.TERN }
+        waitActiveAndDoAction(firstInstance, gameId, BetAction(1000))
+        waitActiveAndDoAction(buttonInstance, gameId, BetAction(1000))
+        waitUntil { game.deal.stage.type == Stage.RIVER }
+        waitActiveAndDoAction(firstInstance, gameId, BetAction(1000))
+        waitActiveAndDoAction(buttonInstance, gameId, BetAction(1000))
+        waitUntil { game.deal.finished }
     }
 
-    private fun waitActiveAndDoAction(instance3: Instance, gameId: UUID, action: Action) {
-        waitActive(instance3)
-        assertTrue(instance3.active)
-        doAction(gameId, instance3, action)
+
+    private fun createDefaultGame() {
+        val createGameResponse = gameService.createGame(
+            CreateGameRequest(
+                GameType.HOLDEM,
+                6,
+                gameID
+            )
+        )
+
+        val gameId = createGameResponse.gameId
+
+        assertTrue(createGameResponse.success)
+        assertNotNull(gameId)
+
+        val listOfInstances = listOf(
+            Instance("test-01"),
+            Instance("test-02"),
+            Instance("test-03"),
+            Instance("test-04")
+        )
+
+        with(instanceService) {
+            addInstances(
+                gameId,
+                listOfInstances
+            )
+        }
+
+        gameService.startGame(StartGameRequest(gameID))
+    }
+
+    private fun waitActiveAndDoAction(instance: Instance, gameId: UUID, action: Action) {
+        waitActive(instance)
+        assertTrue(instance.active)
+        doAction(gameId, instance, action)
     }
 
     private fun doAction(gameId: UUID, instance: Instance, action: Action) {
@@ -179,16 +186,16 @@ class GameCoreTest {
     }
 
 
-    fun waitUntil(predicate: () -> Boolean) {
+    private fun waitUntil(predicate: () -> Boolean) {
         Awaitility.await()
             .atMost(2, TimeUnit.SECONDS)
             .until { predicate.invoke() }
     }
 
 
-    fun waitActive(instance: Instance) {
+    private fun waitActive(instance: Instance) {
         Awaitility.await()
-            .atMost(222, TimeUnit.SECONDS)
+            .atMost(2, TimeUnit.SECONDS)
             .until { instance.active }
     }
 

@@ -1,62 +1,42 @@
 package ru.smn.poker.core
 
-import ru.smn.combination.CardContainer
-import ru.smn.poker.*
+import ru.smn.poker.distributeRoles
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
+import ru.smn.poker.dto.Stage
+import ru.smn.poker.isStageNotFinished
 import ru.smn.poker.log.EliriumLogger
+import ru.smn.poker.setUp
 import java.util.*
 
 
 class GameCore(
-    private val active: Boolean = true,
+    private val gameSetup: GameSetup,
     private val gameHandler: GameHandler,
     val gameId: UUID,
     val instances: MutableList<Instance>,
-    var deal: Deal = Deal(gameId),
+    val deal: Deal = Deal(gameId),
+    var active: Boolean = false,
 ) {
-    fun start() {
-        //Цикл игры
+    suspend fun start() {
+        this.active = true
         while (active) {
-            /* Цикл Игры
-               * */
-            this.deal = buildDeal(instances)
-            while (true) {
+            var instances = instances.distributeRoles().toMutableList()
+            gameSetup.setUp(gameId, deal, instances)
+            while (!deal.finished) {
                 val stage = deal.stage.type
-                EliriumLogger("stage: $stage is started")
-
-                val sortedInstances = instances.distributeRoles()
-                    .sortByStage(stage)
-
-                if (instances.everyoneInAllIn()) {
-                    continue
-                }
-                if (instances.isOnePlayerLeft()) {
-                    break
-                }
-                /* Цикл Раздачи. Условия для выхода.
-                   * 1. Все в олл ине
-                   * 2. Остался один игрок
-                   * */
-                while (true) {
-                    if (instances.everyoneHasTheSameBet(stage)) {
-                        break
-                    }
-                    if (instances.everyoneInAllIn()) {
-                        continue
-                    }
-                    if (instances.isOnePlayerLeft()) {
-                        break
-                    }
-                    /* Цикл круга. Условия для выхода.
-                    * 1. Все кто не сфолдил уровнялись.
-                    * 2. Остался один игрок
-                    * 3. Все в олл ине
-                    * */
-                    sortedInstances.removeFolded().forEach { instance ->
-                        gameHandler.waitAndHandle(deal, instance.action, instance)
+                instances = instances.setUp(stage)
+                EliriumLogger("stage: $stage is started").print()
+                while (instances.isStageNotFinished(stage)) {
+                    instances.forEach { instance ->
+                        gameHandler.waitAndHandle(deal, instance)
                     }
                 }
+                if (stage == Stage.RIVER) {
+                    deal.finished = true
+                    return
+                }
+                deal.stage = deal.nextStage()
             }
         }
     }
@@ -64,18 +44,5 @@ class GameCore(
     fun addInstance(instance: Instance) {
         instances.add(instance)
     }
-
-    private fun buildDeal(instances: MutableList<Instance>): Deal {
-        val cardContainer = CardContainer()
-        return Deal(
-            gameId = gameId,
-            flop1 = cardContainer.retrieveRandomCard(),
-            flop2 = cardContainer.retrieveRandomCard(),
-            flop3 = cardContainer.retrieveRandomCard(),
-            tern = cardContainer.retrieveRandomCard(),
-            river = cardContainer.retrieveRandomCard()
-        )
-    }
-
 
 }

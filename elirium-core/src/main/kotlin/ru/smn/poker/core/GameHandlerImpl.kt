@@ -1,7 +1,7 @@
 package ru.smn.poker.core
 
 import org.awaitility.Awaitility
-import ru.smn.poker.actions.Action
+import org.springframework.stereotype.Service
 import ru.smn.poker.actions.ActionType
 import ru.smn.poker.actions.BetAction
 import ru.smn.poker.actions.Role
@@ -11,21 +11,24 @@ import ru.smn.poker.dto.Stage
 import ru.smn.poker.log.EliriumLogger
 import java.util.concurrent.TimeUnit
 
+@Service
 class GameHandlerImpl : GameHandler {
     private fun waitInstanceAction(instance: Instance) {
-        instance.active = true
         Awaitility.await()
             .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
             .until { instance.action.type != ActionType.NO_ACTION }
-        instance.active = false
     }
 
-    override fun waitAndHandle(deal: Deal, action: Action, instance: Instance) {
+    override suspend fun waitAndHandle(deal: Deal, instance: Instance) {
+        instance.active = true
+        EliriumLogger("active player is: $instance").print()
         waitInstanceAction(instance)
+        val action = instance.action
         deal.bank += action.count()
         instance.chips -= action.count()
         instance.history[deal.stage.type]!!.add(action)
-        EliriumLogger("handle action:$action, by instance:$instance, data:$deal").print()
+        EliriumLogger("handle action: $action, by instance: $instance, data: $deal").print()
+        instance.active = false
     }
 
     override fun handleBlinds(deal: Deal, instances: MutableList<Instance>) {
