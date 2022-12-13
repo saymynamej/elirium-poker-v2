@@ -47,6 +47,45 @@ class GameCoreTest {
 
     private val gameID = UUID.randomUUID()
 
+
+    @Test
+    fun `test with check actions`() {
+        createDefaultGame()
+        val game = gameStorage.getById(gameID)
+        val gameId = game.gameId
+        waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+        assertEquals(Stage.PRE_FLOP, game.deal.stage.type)
+        assertEquals(Role.FIRST, firstInstance.role)
+        assertEquals(Role.BUTTON, buttonInstance.role)
+        assertEquals(Role.SMALL_BLIND, smallBlindInstance.role)
+        assertEquals(Role.BIG_BLIND, bigBlindInstance.role)
+        waitActiveAndDoAction(firstInstance, gameId, CallAction(2))
+        waitActiveAndDoAction(buttonInstance, gameId, CallAction(2))
+        waitActiveAndDoAction(smallBlindInstance, gameId, CallAction(1))
+        waitActiveAndDoAction(bigBlindInstance, gameId, CheckAction())
+        waitUntil { game.deal.stage.type == Stage.FLOP }
+        waitActiveAndDoAction(smallBlindInstance, gameId, CheckAction())
+        waitActiveAndDoAction(bigBlindInstance, gameId, CheckAction())
+        waitActiveAndDoAction(firstInstance, gameId, CheckAction())
+        waitActiveAndDoAction(buttonInstance, gameId, CheckAction())
+        waitUntil { game.deal.stage.type == Stage.TERN }
+        waitActiveAndDoAction(smallBlindInstance, gameId, CheckAction())
+        waitActiveAndDoAction(bigBlindInstance, gameId, CheckAction())
+        waitActiveAndDoAction(firstInstance, gameId, CheckAction())
+        waitActiveAndDoAction(buttonInstance, gameId, CheckAction())
+        waitUntil { game.deal.stage.type == Stage.RIVER }
+        waitActiveAndDoAction(smallBlindInstance, gameId, CheckAction())
+        waitActiveAndDoAction(bigBlindInstance, gameId, CheckAction())
+        waitActiveAndDoAction(firstInstance, gameId, CheckAction())
+        waitActiveAndDoAction(buttonInstance, gameId, CheckAction())
+        waitUntil { game.deal.finished }
+        waitUntil { game.deal.finished }
+    }
+
     @Test
     fun `test with all in actions`() {
         createDefaultGame()
@@ -66,9 +105,6 @@ class GameCoreTest {
         waitActiveAndDoAction(buttonInstance, gameId, AllinAction(1000))
         waitActiveAndDoAction(smallBlindInstance, gameId, AllinAction(999))
         waitActiveAndDoAction(bigBlindInstance, gameId, AllinAction(998))
-//        waitUntil { game.deal.stage.type == Stage.FLOP }
-//        waitUntil { game.deal.stage.type == Stage.TERN }
-//        waitUntil { game.deal.stage.type == Stage.RIVER }
         waitUntil { game.deal.finished }
     }
 

@@ -11,6 +11,7 @@ fun MutableList<Instance>.setUp(stage: Stage): MutableList<Instance> {
         .sortByStage(stage)
         .also {
             if (!this.everyoneInAllIn()) {
+                //TODO
                 this.forEach { instance -> instance.action = NoAction() }
             }
         }.toMutableList()
@@ -22,14 +23,20 @@ fun MutableList<Instance>.isOnePlayerLeft(): Boolean {
     } == 1
 }
 
+fun MutableList<Instance>.allChecks(): Boolean {
+    return this.removeFolded()
+        .all { instance -> instance.action.type == ActionType.CHECK }
+}
+
 fun MutableList<Instance>.everyoneInAllIn(): Boolean {
     return this.removeFolded().all { instance -> instance.action.type == ActionType.ALL_IN }
 }
 
 
 fun MutableList<Instance>.isStageNotFinished(stage: Stage): Boolean {
-    return !this.everyoneHasTheSameBet(stage) && !this.everyoneInAllIn()
+    return !allChecks() && !this.everyoneHasTheSameBet(stage) && !this.everyoneInAllIn()
 }
+
 
 fun MutableList<Instance>.everyoneHasTheSameBet(stage: Stage): Boolean {
     val bets = this.removeFolded().map { instance ->

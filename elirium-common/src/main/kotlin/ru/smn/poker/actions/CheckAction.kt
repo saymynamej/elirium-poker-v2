@@ -1,7 +1,7 @@
 package ru.smn.poker.actions
 
-class CheckAction(private val count: Long) : Action {
-    override fun count() = this.count
+class CheckAction : Action {
+    override fun count() = 0L
 
     override val type = ActionType.CHECK
 }

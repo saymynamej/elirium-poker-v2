@@ -14,7 +14,7 @@ enum class ActionType {
         return when (this) {
             CALL -> CallAction(count)
             RAISE -> RaiseAction(count)
-            CHECK -> CheckAction(count)
+            CHECK -> CheckAction()
             BET -> BetAction(count)
             ALL_IN -> AllinAction(count)
             NO_ACTION -> NoAction()
