@@ -1,5 +1,6 @@
 package ru.smn.poker.combination;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ru.smn.poker.combination.data.Card;
 

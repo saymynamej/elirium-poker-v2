@@ -11,7 +11,7 @@ class GameCore(
     val gameId: UUID,
     val instances: MutableList<Instance>,
     val deal: Deal = Deal(gameId),
-    var active: Boolean = false,
+    var active: Boolean = false
 ) {
     suspend fun start() {
         this.active = true
@@ -22,16 +22,15 @@ class GameCore(
                 val stage = deal.stage.type
                 instances = instances.setUp(stage)
                 EliriumLogger("stage: $stage is started").print()
+                val getInstanceForAction = instances.next()
                 while (instances.isStageNotFinished(stage)) {
-                    instances.forEach { instance ->
-                        gameHandler.waitAndHandle(deal, instance)
-                    }
+                    gameHandler.waitAndHandle(deal, getInstanceForAction())
                 }
                 if (stage == Stage.RIVER) {
                     deal.finished = true
                     return
                 }
-                deal.stage = deal.nextStage()
+                deal.nextStage()
             }
         }
     }

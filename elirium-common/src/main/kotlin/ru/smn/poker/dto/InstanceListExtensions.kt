@@ -6,6 +6,15 @@ import ru.smn.poker.actions.Role
 
 private const val NOT_FOUND_INDEX: Int = -1
 
+fun MutableList<Instance>.next(): () -> Instance {
+    var i = 0
+    val instanceForAction: () -> Instance = {
+        if (i >= this.size) i = 0
+        this[i++]
+    }
+    return instanceForAction
+}
+
 fun MutableList<Instance>.setUp(stage: Stage): MutableList<Instance> {
     return this.removeFolded()
         .sortByStage(stage)
@@ -18,9 +27,7 @@ fun MutableList<Instance>.setUp(stage: Stage): MutableList<Instance> {
 }
 
 fun MutableList<Instance>.isOnePlayerLeft(): Boolean {
-    return this.count { instance ->
-        instance.action.type != ActionType.FOLD
-    } == 1
+    return this.removeFolded().size == 1
 }
 
 fun MutableList<Instance>.allChecks(): Boolean {
@@ -33,19 +40,29 @@ fun MutableList<Instance>.everyoneInAllIn(): Boolean {
 }
 
 
-fun MutableList<Instance>.isStageNotFinished(stage: Stage): Boolean {
-    return !allChecks() && !this.everyoneHasTheSameBet(stage) && !this.everyoneInAllIn()
+fun MutableList<Instance>.isStageFinished(stage: Stage): Boolean {
+    return allChecks() || this.everyoneHasTheSameBet(stage) || this.everyoneInAllIn()
 }
 
+fun MutableList<Instance>.isStageNotFinished(stage: Stage): Boolean {
+    return !isStageFinished(stage)
+}
 
 fun MutableList<Instance>.everyoneHasTheSameBet(stage: Stage): Boolean {
-    val bets = this.removeFolded().map { instance ->
-        instance.history[stage]
-    }.map { actions ->
-        actions!!.sumOf { action -> action.count() }
-    }
+    val removedFoldedInstances = this.removeFolded()
+
+    val bets = removedFoldedInstances
+        .map { instance -> instance.history[stage] }
+        .map { actions -> actions!!.sumOf { action -> action.count() } }
+
+    val bigBlindHasOneBet = removedFoldedInstances
+        .filter { instance -> instance.role == Role.BIG_BLIND }
+        .filter { instance -> instance.history[Stage.PRE_FLOP] != null }
+        .map { instance -> instance.history[Stage.PRE_FLOP]!!.size == 1 }
+        .firstOrNull() ?: false
+
     val distinct = bets.distinct()
-    return distinct.size == 1 && distinct[0] != 0L
+    return distinct.size == 1 && distinct[0] != 0L && !bigBlindHasOneBet
 }
 
 fun MutableList<Instance>.getNextIndexForRole(role: Role): Int {

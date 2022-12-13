@@ -45,14 +45,11 @@ class GameCoreTest {
     @Autowired
     private lateinit var gameStorage: GameStorage
 
-    private val gameID = UUID.randomUUID()
-
 
     @Test
     fun `test with check actions`() {
-        createDefaultGame()
-        val game = gameStorage.getById(gameID)
-        val gameId = game.gameId
+        val gameId = createDefaultGame()
+        val game = gameStorage.getById(gameId)
         waitUntil { game.active }
         val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
         val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
@@ -83,14 +80,43 @@ class GameCoreTest {
         waitActiveAndDoAction(firstInstance, gameId, CheckAction())
         waitActiveAndDoAction(buttonInstance, gameId, CheckAction())
         waitUntil { game.deal.finished }
+    }
+
+    @Test
+    fun `test with raise and re-raise`() {
+        val gameId = createDefaultGame()
+        val game = gameStorage.getById(gameId)
+        waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+        assertEquals(Stage.PRE_FLOP, game.deal.stage.type)
+        assertEquals(Role.FIRST, firstInstance.role)
+        assertEquals(Role.BUTTON, buttonInstance.role)
+        assertEquals(Role.SMALL_BLIND, smallBlindInstance.role)
+        assertEquals(Role.BIG_BLIND, bigBlindInstance.role)
+        waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+        waitActiveAndDoAction(buttonInstance, gameId, RaiseAction(400))
+        waitActiveAndDoAction(smallBlindInstance, gameId, FoldAction())
+        waitActiveAndDoAction(bigBlindInstance, gameId, FoldAction())
+        waitActiveAndDoAction(firstInstance, gameId, CallAction(200))
+        waitUntil { game.deal.stage.type == Stage.FLOP }
+        waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+        waitActiveAndDoAction(buttonInstance, gameId, CallAction(200))
+        waitUntil { game.deal.stage.type == Stage.TERN }
+        waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+        waitActiveAndDoAction(buttonInstance, gameId, CallAction(200))
+        waitUntil { game.deal.stage.type == Stage.RIVER }
+        waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+        waitActiveAndDoAction(buttonInstance, gameId, CallAction(200))
         waitUntil { game.deal.finished }
     }
 
     @Test
     fun `test with all in actions`() {
-        createDefaultGame()
-        val game = gameStorage.getById(gameID)
-        val gameId = game.gameId
+        val gameId = createDefaultGame()
+        val game = gameStorage.getById(gameId)
         waitUntil { game.active }
         val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
         val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
@@ -110,9 +136,8 @@ class GameCoreTest {
 
     @Test
     fun `test with call actions`() {
-        createDefaultGame()
-        val game = gameStorage.getById(gameID)
-        val gameId = game.gameId
+        val gameId = createDefaultGame()
+        val game = gameStorage.getById(gameId)
         waitUntil { game.active }
         val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
         val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
@@ -147,9 +172,8 @@ class GameCoreTest {
 
     @Test
     fun `test with fold actions`() {
-        createDefaultGame()
-        val game = gameStorage.getById(gameID)
-        val gameId = game.gameId
+        val gameId = createDefaultGame()
+        val game = gameStorage.getById(gameId)
         waitUntil { game.active }
         val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
         val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
@@ -177,16 +201,16 @@ class GameCoreTest {
     }
 
 
-    private fun createDefaultGame() {
+    private fun createDefaultGame(): UUID {
+        val gameId = UUID.randomUUID()
         val createGameResponse = gameService.createGame(
             CreateGameRequest(
                 GameType.HOLDEM,
                 6,
-                gameID
+                gameId
             )
         )
 
-        val gameId = createGameResponse.gameId
 
         assertTrue(createGameResponse.success)
         assertNotNull(gameId)
@@ -205,7 +229,7 @@ class GameCoreTest {
             )
         }
 
-        gameService.startGame(StartGameRequest(gameID))
+        return gameService.startGame(StartGameRequest(gameId)).gameId
     }
 
     private fun waitActiveAndDoAction(instance: Instance, gameId: UUID, action: Action) {
@@ -228,7 +252,6 @@ class GameCoreTest {
             .atMost(2, TimeUnit.SECONDS)
             .until { predicate.invoke() }
     }
-
 
     private fun waitActive(instance: Instance) {
         Awaitility.await()
