@@ -1,10 +1,8 @@
-package ru.smn.poker
+package ru.smn.poker.dto
 
 import ru.smn.poker.actions.ActionType
 import ru.smn.poker.actions.NoAction
 import ru.smn.poker.actions.Role
-import ru.smn.poker.dto.Instance
-import ru.smn.poker.dto.Stage
 
 private const val NOT_FOUND_INDEX: Int = -1
 

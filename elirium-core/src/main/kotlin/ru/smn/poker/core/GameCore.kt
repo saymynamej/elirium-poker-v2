@@ -1,12 +1,12 @@
 package ru.smn.poker.core
 
-import ru.smn.poker.distributeRoles
+import ru.smn.poker.dto.distributeRoles
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.dto.Stage
-import ru.smn.poker.isStageNotFinished
+import ru.smn.poker.dto.isStageNotFinished
 import ru.smn.poker.log.EliriumLogger
-import ru.smn.poker.setUp
+import ru.smn.poker.dto.setUp
 import java.util.*
 
 
