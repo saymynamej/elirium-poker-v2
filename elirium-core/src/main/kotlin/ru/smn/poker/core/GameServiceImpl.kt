@@ -15,17 +15,17 @@ import java.util.*
 class GameServiceImpl(
     private val gameStorage: GameStorage,
     private val gameSetup: GameSetup,
-    private val gameHandler: GameHandler,
+    private val actionHandler: ActionHandler,
 ) : GameService {
     override fun createGame(createGameRequest: CreateGameRequest): CreateGameResponse {
         val gameId = createGameRequest.gameId ?: UUID.randomUUID()
 
         with(gameStorage) {
             add(
-                GameCore(
+                Game(
                     gameId = gameId,
                     instances = mutableListOf(),
-                    gameHandler = gameHandler,
+                    actionHandler = actionHandler,
                     gameSetup = gameSetup
                 )
             )

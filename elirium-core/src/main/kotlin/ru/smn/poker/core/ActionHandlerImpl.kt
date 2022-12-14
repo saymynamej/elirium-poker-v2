@@ -12,7 +12,7 @@ import ru.smn.poker.log.EliriumLogger
 import java.util.concurrent.TimeUnit
 
 @Service
-class GameHandlerImpl : GameHandler {
+class ActionHandlerImpl : ActionHandler {
     private fun waitInstanceAction(instance: Instance) {
         Awaitility.await()
             .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)

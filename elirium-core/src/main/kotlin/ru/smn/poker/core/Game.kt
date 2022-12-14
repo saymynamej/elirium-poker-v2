@@ -5,9 +5,9 @@ import ru.smn.poker.log.EliriumLogger
 import java.util.*
 
 
-class GameCore(
+class Game(
     private val gameSetup: GameSetup,
-    private val gameHandler: GameHandler,
+    private val actionHandler: ActionHandler,
     val gameId: UUID,
     val instances: MutableList<Instance>,
     val deal: Deal = Deal(gameId),
@@ -24,7 +24,7 @@ class GameCore(
                 EliriumLogger.print("stage: $stage is started")
                 val getInstanceForAction = instances.next()
                 while (instances.isStageNotFinished(stage)) {
-                    gameHandler.waitAndHandle(deal, getInstanceForAction())
+                    actionHandler.waitAndHandle(deal, getInstanceForAction())
                 }
                 if (stage == Stage.RIVER) {
                     deal.finished = true

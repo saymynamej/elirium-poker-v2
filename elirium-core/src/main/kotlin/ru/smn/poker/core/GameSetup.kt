@@ -11,11 +11,11 @@ import java.util.*
 
 @Service
 class GameSetup(
-    val gameHandler: GameHandler,
+    val actionHandler: ActionHandler,
 ) {
     fun setUp(gameId: UUID, deal: Deal, instances: MutableList<Instance>): Deal {
         val cardContainer = CardContainer()
-        gameHandler.handleBlinds(deal, instances)
+        actionHandler.handleBlinds(deal, instances)
         instances.forEach { instance ->
             instance.cards = mutableListOf(
                 cardContainer.retrieveRandomCard(),
