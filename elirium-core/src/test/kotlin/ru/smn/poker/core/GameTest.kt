@@ -38,7 +38,7 @@ class GameTest {
 
 
     @Test
-    fun `test with other actions`() {
+    fun `scenario 1`() {
         val gameId = gameCreator.createDefaultGame(6)
         val game = gameStorage.getById(gameId)
         actionHelper.waitUntil { game.active }
@@ -71,7 +71,7 @@ class GameTest {
     }
 
     @Test
-    fun `test with check actions`() {
+    fun `scenario 2`() {
         val gameId = gameCreator.createDefaultGame(4)
         val game = gameStorage.getById(gameId)
         actionHelper.waitUntil { game.active }
@@ -105,7 +105,7 @@ class GameTest {
     }
 
     @Test
-    fun `test with raise and re-raise`() {
+    fun `scenario 3`() {
         val gameId = gameCreator.createDefaultGame(4)
         val game = gameStorage.getById(gameId)
         actionHelper.waitUntil { game.active }
@@ -134,7 +134,7 @@ class GameTest {
     }
 
     @Test
-    fun `test with all in actions`() {
+    fun `scenario 4`() {
         val gameId = gameCreator.createDefaultGame(4)
         val game = gameStorage.getById(gameId)
         actionHelper.waitUntil { game.active }
@@ -152,7 +152,7 @@ class GameTest {
     }
 
     @Test
-    fun `test with call actions`() {
+    fun `scenario 5`() {
         val gameId = gameCreator.createDefaultGame(4)
         val game = gameStorage.getById(gameId)
         actionHelper.waitUntil { game.active }
@@ -186,7 +186,7 @@ class GameTest {
     }
 
     @Test
-    fun `test with fold actions`() {
+    fun `scenario 6`() {
         val gameId = gameCreator.createDefaultGame(4)
         val game = gameStorage.getById(gameId)
         actionHelper.waitUntil { game.active }
@@ -214,4 +214,31 @@ class GameTest {
 
     }
 
+    @Test
+    fun `scenario 7`() {
+        val gameId = gameCreator.createDefaultGame(6)
+        val game = gameStorage.getById(gameId)
+        actionHelper.waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val secondInstance = game.instances.first { instance -> instance.role == Role.SECOND }
+        val thirdInstance = game.instances.first { instance -> instance.role == Role.THIRD }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+
+        with(actionHelper) {
+            waitUntil { game.deal.stage.type == Stage.PRE_FLOP }
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(10))
+            waitActiveAndDoAction(secondInstance, gameId, RaiseAction(20))
+            waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(40))
+            waitActiveAndDoAction(buttonInstance, gameId, RaiseAction(80))
+            waitActiveAndDoAction(smallBlindInstance, gameId, FoldAction())
+            waitActiveAndDoAction(bigBlindInstance, gameId, FoldAction())
+            waitActiveAndDoAction(firstInstance, gameId, CallAction(70))
+            waitActiveAndDoAction(secondInstance, gameId, CallAction(60))
+            waitActiveAndDoAction(thirdInstance, gameId, CallAction(40))
+            waitUntil { game.deal.stage.type == Stage.FLOP }
+        }
+    }
+    
 }
