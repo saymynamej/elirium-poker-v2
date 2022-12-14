@@ -28,13 +28,13 @@ class ActionHelper(private val actionService: ActionService) {
 
     fun waitUntil(predicate: () -> Boolean) {
         Awaitility.await()
-            .atMost(3, TimeUnit.SECONDS)
+            .atMost(2, TimeUnit.SECONDS)
             .until { predicate.invoke() }
     }
 
     fun waitActive(instance: Instance) {
         Awaitility.await()
-            .atMost(3, TimeUnit.SECONDS)
+            .atMost(2, TimeUnit.SECONDS)
             .until { instance.active }
     }
 }

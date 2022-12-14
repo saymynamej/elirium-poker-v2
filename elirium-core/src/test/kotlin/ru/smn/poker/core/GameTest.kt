@@ -241,4 +241,54 @@ class GameTest {
         }
     }
 
+    @Test
+    fun `scenario 8`() {
+        val gameId = gameCreator.createDefaultGame(6)
+        val game = gameStorage.getById(gameId)
+        actionHelper.waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val secondInstance = game.instances.first { instance -> instance.role == Role.SECOND }
+        val thirdInstance = game.instances.first { instance -> instance.role == Role.THIRD }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+
+        with(actionHelper) {
+            waitUntil { game.deal.stage.type == Stage.PRE_FLOP }
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(10))
+            waitActiveAndDoAction(secondInstance, gameId, CallAction(10))
+            waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(100))
+            waitActiveAndDoAction(buttonInstance, gameId, CallAction(100))
+            waitActiveAndDoAction(smallBlindInstance, gameId, FoldAction())
+            waitActiveAndDoAction(bigBlindInstance, gameId, FoldAction())
+            waitActiveAndDoAction(firstInstance, gameId, CallAction(90))
+            waitActiveAndDoAction(secondInstance, gameId, CallAction(90))
+            waitUntil { game.deal.stage.type == Stage.FLOP }
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(100))
+            waitActiveAndDoAction(secondInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(1000))
+            waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
+            waitActiveAndDoAction(firstInstance, gameId, CallAction(900))
+            waitActiveAndDoAction(secondInstance, gameId, CallAction(800))
+            waitUntil { game.deal.stage.type == Stage.TERN }
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(1000))
+            waitActiveAndDoAction(secondInstance, gameId, RaiseAction(4000))
+            waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(4000))
+            waitActiveAndDoAction(buttonInstance, gameId, CallAction(8000))
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(7000))
+            waitActiveAndDoAction(secondInstance, gameId, RaiseAction(4000))
+            waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(4000))
+            waitUntil { game.deal.stage.type == Stage.RIVER }
+
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(10_000))
+            waitActiveAndDoAction(secondInstance, gameId, RaiseAction(50_000))
+            waitActiveAndDoAction(thirdInstance, gameId, FoldAction())
+            waitActiveAndDoAction(buttonInstance, gameId, FoldAction())
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(100_000))
+            waitActiveAndDoAction(secondInstance, gameId, RaiseAction(500_000))
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(440_000))
+            waitUntil { game.deal.finished }
+        }
+    }
+
 }

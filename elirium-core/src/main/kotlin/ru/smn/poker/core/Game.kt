@@ -1,5 +1,6 @@
 package ru.smn.poker.core
 
+import ru.smn.poker.actions.ActionType
 import ru.smn.poker.dto.*
 import ru.smn.poker.log.EliriumLogger
 import java.util.*
@@ -22,9 +23,9 @@ class Game(
                 val stage = deal.stage.type
                 instances = instances.setUp(stage)
                 EliriumLogger.print("stage: $stage is started")
-                val getInstanceForAction = instances.next()
+                val nextInstanceFunction = instances.next()
                 while (instances.isStageNotFinished(stage)) {
-                    actionHandler.waitAndHandle(deal, getInstanceForAction())
+                    actionHandler.waitAndHandle(deal, nextInstanceFunction())
                 }
                 if (stage == Stage.RIVER) {
                     deal.finished = true

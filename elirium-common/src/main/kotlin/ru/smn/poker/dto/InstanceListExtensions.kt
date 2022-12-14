@@ -5,6 +5,11 @@ import ru.smn.poker.actions.Role
 
 private const val NOT_FOUND_INDEX: Int = -1
 
+
+fun MutableList<Instance>.firstByRole(role: Role): Instance {
+    return this.first { instance -> instance.role == role }
+}
+
 fun MutableList<Instance>.next(): () -> Instance {
     var i = 0
     val instanceForAction: () -> Instance = {
