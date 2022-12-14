@@ -1,7 +1,6 @@
 package ru.smn.poker.dto
 
 import ru.smn.poker.actions.ActionType
-import ru.smn.poker.actions.NoAction
 import ru.smn.poker.actions.Role
 
 private const val NOT_FOUND_INDEX: Int = -1
@@ -18,30 +17,21 @@ fun MutableList<Instance>.next(): () -> Instance {
 fun MutableList<Instance>.setUp(stage: Stage): MutableList<Instance> {
     return this.removeFolded()
         .sortByStage(stage)
-        .also {
-            if (!this.everyoneInAllIn()) {
-                //TODO
-                this.forEach { instance -> instance.action = NoAction() }
-            }
-        }.toMutableList()
+        .toMutableList()
 }
 
-fun MutableList<Instance>.isOnePlayerLeft(): Boolean {
-    return this.removeFolded().size == 1
-}
-
-fun MutableList<Instance>.allChecks(): Boolean {
+fun MutableList<Instance>.allChecks(stage: Stage): Boolean {
     return this.removeFolded()
-        .all { instance -> instance.action.type == ActionType.CHECK }
+        .all { instance -> instance.lastActionIs(stage, ActionType.CHECK) }
 }
 
 fun MutableList<Instance>.everyoneInAllIn(): Boolean {
-    return this.removeFolded().all { instance -> instance.action.type == ActionType.ALL_IN }
+    return this.removeFolded().all { instance -> instance.lastActionIs(ActionType.ALL_IN) }
 }
 
 
 fun MutableList<Instance>.isStageFinished(stage: Stage): Boolean {
-    return allChecks() || this.everyoneHasTheSameBet(stage) || this.everyoneInAllIn()
+    return allChecks(stage) || this.everyoneHasTheSameBet(stage) || this.everyoneInAllIn()
 }
 
 fun MutableList<Instance>.isStageNotFinished(stage: Stage): Boolean {
@@ -84,8 +74,7 @@ fun MutableList<Instance>.allHasRole(role: Role): Boolean {
 }
 
 fun MutableList<Instance>.removeFolded(): MutableList<Instance> =
-    this.filter { instance -> instance.action.type != ActionType.FOLD }
-        .toMutableList()
+    this.filter { instance -> !instance.lastActionIs(ActionType.FOLD) }.toMutableList()
 
 fun MutableList<Instance>.distributeRoles(): MutableList<Instance> {
     if (this.isEmpty() || this.size < 2) throw RuntimeException("list is not enough size")

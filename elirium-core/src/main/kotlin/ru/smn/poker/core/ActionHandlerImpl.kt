@@ -4,6 +4,7 @@ import org.awaitility.Awaitility
 import org.springframework.stereotype.Service
 import ru.smn.poker.actions.ActionType
 import ru.smn.poker.actions.BetAction
+import ru.smn.poker.actions.NoAction
 import ru.smn.poker.actions.Role
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
@@ -29,6 +30,7 @@ class ActionHandlerImpl : ActionHandler {
         instance.history[deal.stage.type]!!.add(action)
         EliriumLogger.print("handle action: $action, by instance: $instance, data: $deal")
         instance.active = false
+        instance.action = NoAction()
     }
 
     override fun handleBlinds(deal: Deal, instances: MutableList<Instance>) {

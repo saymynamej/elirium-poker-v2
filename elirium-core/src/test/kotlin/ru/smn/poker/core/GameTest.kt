@@ -240,5 +240,5 @@ class GameTest {
             waitUntil { game.deal.stage.type == Stage.FLOP }
         }
     }
-    
+
 }
