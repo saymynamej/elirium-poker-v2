@@ -18,7 +18,7 @@ class ActionServiceImpl(private val gameStorage: GameStorage) : ActionService {
         val game = gameStorage.getById(gameId)
 
         game.instances
-            .first { instance -> instance.instanceName == instanceName }
+            .first { instance -> instance.name == instanceName }
             .action = action
     }
 

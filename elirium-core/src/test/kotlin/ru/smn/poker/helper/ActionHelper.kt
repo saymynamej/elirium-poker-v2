@@ -21,7 +21,7 @@ class ActionHelper(private val actionService: ActionService) {
     fun doAction(gameId: UUID, instance: Instance, action: Action) {
         actionService.doAction(
             gameId,
-            instance.instanceName,
+            instance.name,
             action
         )
     }

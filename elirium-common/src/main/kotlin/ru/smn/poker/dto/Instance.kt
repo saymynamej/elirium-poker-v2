@@ -7,7 +7,7 @@ import ru.smn.poker.actions.Role
 import ru.smn.poker.combination.data.Card
 
 data class Instance(
-    val instanceName: String,
+    val name: String,
     var active: Boolean = false,
     var action: Action = NoAction(),
     var timeBank: Int = 120,

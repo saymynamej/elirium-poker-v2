@@ -4,6 +4,7 @@ import ru.smn.poker.actions.ActionType
 import ru.smn.poker.actions.Role
 
 private const val NOT_FOUND_INDEX: Int = -1
+private const val MAXIMUM_RETRIES_FOR_FINDING_PLAYER: Int = 18
 
 
 fun MutableList<Instance>.firstByRole(role: Role): Instance {
@@ -18,17 +19,20 @@ fun MutableList<Instance>.isOnePlayerLeft(): Boolean {
     return this.removeFolded().size == 1
 }
 
-fun MutableList<Instance>.next(): () -> Instance {
+fun MutableList<Instance>.nextInstanceFunction(): () -> Instance {
     var currentIndex = 0
     val instanceForAction: () -> Instance = {
-        val (index, instance) = tryToGetNextElement(this, currentIndex)
+        val (index, instance) = tryToGetNextElement(this, currentIndex, 0)
         currentIndex = index
         instance
     }
     return instanceForAction
 }
 
-fun tryToGetNextElement(instances: MutableList<Instance>, currentIndex: Int): IndexAndInstance {
+fun tryToGetNextElement(instances: MutableList<Instance>, currentIndex: Int, invokedTimes: Int): IndexAndInstance {
+    if (invokedTimes > MAXIMUM_RETRIES_FOR_FINDING_PLAYER) {
+        throw RuntimeException("cannot retrieve next player")
+    }
     var copyCurrentIndex = currentIndex.let { index ->
         if (index >= instances.size) {
             0
@@ -36,7 +40,7 @@ fun tryToGetNextElement(instances: MutableList<Instance>, currentIndex: Int): In
     }
     val instance = instances[copyCurrentIndex]
     if (instance.lastActionIs(ActionType.FOLD)) {
-        return tryToGetNextElement(instances, ++copyCurrentIndex)
+        return tryToGetNextElement(instances, ++copyCurrentIndex, invokedTimes.inc())
     }
     return IndexAndInstance(++copyCurrentIndex, instance)
 }

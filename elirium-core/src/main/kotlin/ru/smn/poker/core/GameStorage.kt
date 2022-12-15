@@ -6,18 +6,18 @@ import java.util.*
 
 @Service
 class GameStorage(
-    val games: MutableMap<Game, Job?> = mutableMapOf(),
+    val games: MutableMap<GameImpl, Job?> = mutableMapOf(),
 ) {
-    fun getById(id: UUID): Game {
+    fun getById(id: UUID): GameImpl {
         return games.keys.first { game -> game.gameId == id }
     }
 
-    fun addJob(game: Game, job: Job) {
-        games[game] = job
+    fun addJob(gameImpl: GameImpl, job: Job) {
+        games[gameImpl] = job
     }
 
-    fun add(game: Game) {
-        games[game] = null
+    fun add(gameImpl: GameImpl) {
+        games[gameImpl] = null
     }
 
     fun remove(id: UUID) {

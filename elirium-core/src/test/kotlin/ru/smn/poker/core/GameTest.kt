@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import ru.smn.poker.actions.*
 import ru.smn.poker.combination.CardContainer
+import ru.smn.poker.combination.ClassicCombinationService
 import ru.smn.poker.dto.Stage
 import ru.smn.poker.helper.ActionHelper
 import java.util.*
@@ -21,7 +22,8 @@ import kotlin.test.Test
         ActionHandlerImpl::class,
         CardContainer::class,
         ActionHelper::class,
-        GameCreator::class
+        GameCreator::class,
+        ClassicCombinationService::class
     ]
 )
 @ExtendWith(SpringExtension::class)

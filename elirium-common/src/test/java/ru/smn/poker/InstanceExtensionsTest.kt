@@ -1,6 +1,7 @@
 package ru.smn.poker
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import ru.smn.poker.actions.Action
 import ru.smn.poker.actions.CallAction
 import ru.smn.poker.actions.FoldAction
@@ -12,6 +13,20 @@ import kotlin.test.assertTrue
 
 
 class InstanceExtensionsTest {
+
+    @Test
+    fun `should throw exception when finding not folded players`() {
+        val instances = mutableListOf(
+            Instance("test-1", role = Role.EMPTY).apply {
+                history[Stage.PRE_FLOP]!!.add(FoldAction())
+            },
+            Instance("test-6", role = Role.EMPTY).apply {
+                history[Stage.PRE_FLOP]!!.add(FoldAction())
+            },
+        )
+        val nextFunction = instances.nextInstanceFunction()
+        assertThrows<RuntimeException> { nextFunction() }
+    }
 
     @Test
     fun shouldSkipFoldedInstances() {
@@ -31,20 +46,20 @@ class InstanceExtensionsTest {
             Instance("test-8", role = Role.EMPTY),
         )
 
-        val nextFunction = instances.next()
-        assertEquals("test-0", nextFunction().instanceName)
-        assertEquals("test-2", nextFunction().instanceName)
-        assertEquals("test-3", nextFunction().instanceName)
-        assertEquals("test-4", nextFunction().instanceName)
-        assertEquals("test-5", nextFunction().instanceName)
-        assertEquals("test-7", nextFunction().instanceName)
-        assertEquals("test-8", nextFunction().instanceName)
-        assertEquals("test-0", nextFunction().instanceName)
-        assertEquals("test-2", nextFunction().instanceName)
-        assertEquals("test-3", nextFunction().instanceName)
-        assertEquals("test-4", nextFunction().instanceName)
-        assertEquals("test-5", nextFunction().instanceName)
-        assertEquals("test-7", nextFunction().instanceName)
+        val nextFunction = instances.nextInstanceFunction()
+        assertEquals("test-0", nextFunction().name)
+        assertEquals("test-2", nextFunction().name)
+        assertEquals("test-3", nextFunction().name)
+        assertEquals("test-4", nextFunction().name)
+        assertEquals("test-5", nextFunction().name)
+        assertEquals("test-7", nextFunction().name)
+        assertEquals("test-8", nextFunction().name)
+        assertEquals("test-0", nextFunction().name)
+        assertEquals("test-2", nextFunction().name)
+        assertEquals("test-3", nextFunction().name)
+        assertEquals("test-4", nextFunction().name)
+        assertEquals("test-5", nextFunction().name)
+        assertEquals("test-7", nextFunction().name)
     }
 
 
