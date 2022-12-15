@@ -13,9 +13,8 @@ import kotlin.test.assertTrue
 
 class InstanceExtensionsTest {
 
-
     @Test
-    fun shouldGetRightPlayer() {
+    fun shouldSkipFoldedInstances() {
         val instances = mutableListOf(
             Instance("test-0", role = Role.EMPTY),
             Instance("test-1", role = Role.EMPTY).apply {
@@ -25,7 +24,9 @@ class InstanceExtensionsTest {
             Instance("test-3", role = Role.EMPTY),
             Instance("test-4", role = Role.EMPTY),
             Instance("test-5", role = Role.EMPTY),
-            Instance("test-6", role = Role.EMPTY),
+            Instance("test-6", role = Role.EMPTY).apply {
+                history[Stage.PRE_FLOP]!!.add(FoldAction())
+            },
             Instance("test-7", role = Role.EMPTY),
             Instance("test-8", role = Role.EMPTY),
         )
@@ -36,10 +37,14 @@ class InstanceExtensionsTest {
         assertEquals("test-3", nextFunction().instanceName)
         assertEquals("test-4", nextFunction().instanceName)
         assertEquals("test-5", nextFunction().instanceName)
-        assertEquals("test-6", nextFunction().instanceName)
         assertEquals("test-7", nextFunction().instanceName)
         assertEquals("test-8", nextFunction().instanceName)
         assertEquals("test-0", nextFunction().instanceName)
+        assertEquals("test-2", nextFunction().instanceName)
+        assertEquals("test-3", nextFunction().instanceName)
+        assertEquals("test-4", nextFunction().instanceName)
+        assertEquals("test-5", nextFunction().instanceName)
+        assertEquals("test-7", nextFunction().instanceName)
     }
 
 

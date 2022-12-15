@@ -21,16 +21,16 @@ fun MutableList<Instance>.next(): () -> Instance {
 }
 
 fun tryToGetNextElement(instances: MutableList<Instance>, currentIndex: Int): IndexAndInstance {
-    var copyCurrentIndex = currentIndex
-    if (copyCurrentIndex >= instances.size) copyCurrentIndex = 0
-
+    var copyCurrentIndex = currentIndex.let { index ->
+        if (index >= instances.size) {
+            0
+        } else index
+    }
     val instance = instances[copyCurrentIndex]
     if (instance.lastActionIs(ActionType.FOLD)) {
         return tryToGetNextElement(instances, ++copyCurrentIndex)
     }
-
-    ++copyCurrentIndex
-    return IndexAndInstance(copyCurrentIndex, instance)
+    return IndexAndInstance(++copyCurrentIndex, instance)
 }
 
 
