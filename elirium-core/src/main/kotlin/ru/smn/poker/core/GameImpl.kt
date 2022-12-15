@@ -6,7 +6,7 @@ import java.util.*
 
 
 class GameImpl(
-    private val gameSetup: GameSetup,
+    private val dealCustomizer: DealCustomizer,
     private val actionHandler: ActionHandler,
     private val dealHandler: DealHandler,
     val gameId: UUID,
@@ -18,7 +18,7 @@ class GameImpl(
         this.active = true
         while (active) {
             var instances = instances.distributeRoles().toMutableList()
-            gameSetup.setUp(gameId, deal, instances)
+            dealCustomizer.customize(gameId, deal, instances)
             while (!deal.finished) {
                 val stage = deal.stage.type
                 instances = instances.setUp(stage)

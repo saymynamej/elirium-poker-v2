@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
-import ru.smn.poker.combination.CombinationService
 import ru.smn.poker.game.CreateGameRequest
 import ru.smn.poker.game.CreateGameResponse
 import ru.smn.poker.game.StartGameRequest
@@ -15,9 +14,9 @@ import java.util.*
 @Service
 class GameServiceImpl(
     private val gameStorage: GameStorage,
-    private val gameSetup: GameSetup,
+    private val dealCustomizer: DealCustomizer,
     private val actionHandler: ActionHandler,
-    private val combinationService: CombinationService
+    private val dealHandler: DealHandler,
 ) : GameService {
     override fun createGame(createGameRequest: CreateGameRequest): CreateGameResponse {
         val gameId = createGameRequest.gameId ?: UUID.randomUUID()
@@ -28,8 +27,8 @@ class GameServiceImpl(
                     gameId = gameId,
                     instances = mutableListOf(),
                     actionHandler = actionHandler,
-                    gameSetup = gameSetup,
-                    dealHandler = DealHandlerImpl(combinationService)
+                    dealCustomizer = dealCustomizer,
+                    dealHandler = dealHandler
                 )
             )
         }

@@ -18,7 +18,7 @@ import kotlin.test.Test
         GameStorage::class,
         InstanceService::class,
         ActionServiceImpl::class,
-        GameSetup::class,
+        DealCustomizerImpl::class,
         ActionHandlerImpl::class,
         CardContainer::class,
         ActionHelper::class,

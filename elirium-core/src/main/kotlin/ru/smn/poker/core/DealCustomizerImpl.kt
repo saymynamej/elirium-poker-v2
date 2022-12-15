@@ -10,10 +10,10 @@ import java.util.*
 
 
 @Service
-class GameSetup(
+class DealCustomizerImpl(
     val actionHandler: ActionHandler,
-) {
-    fun setUp(gameId: UUID, deal: Deal, instances: MutableList<Instance>): Deal {
+) : DealCustomizer {
+    override fun customize(gameId: UUID, deal: Deal, instances: MutableList<Instance>): Deal {
         val cardContainer = CardContainer()
         actionHandler.handleBlinds(deal, instances)
         instances.forEach { instance ->
