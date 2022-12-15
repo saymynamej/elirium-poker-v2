@@ -291,7 +291,6 @@ class GameTest {
         }
     }
 
-
     @Test
     fun `scenario 9`() {
         val gameId = gameCreator.createDefaultGame(6)
@@ -315,7 +314,6 @@ class GameTest {
             waitUntil { game.deal.finished }
         }
     }
-
 
     @Test
     fun `scenario 10`() {
@@ -343,6 +341,71 @@ class GameTest {
             waitActiveAndDoAction(firstInstance, gameId, FoldAction())
             waitActiveAndDoAction(secondInstance, gameId, FoldAction())
             waitActiveAndDoAction(thirdInstance, gameId, FoldAction())
+            waitUntil { game.deal.finished }
+        }
+    }
+
+    @Test
+    fun `scenario 11`() {
+        val gameId = gameCreator.createDefaultGame(6)
+        val game = gameStorage.getById(gameId)
+        actionHelper.waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val secondInstance = game.instances.first { instance -> instance.role == Role.SECOND }
+        val thirdInstance = game.instances.first { instance -> instance.role == Role.THIRD }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+
+        with(actionHelper) {
+            waitUntil { game.deal.stage.type == Stage.PRE_FLOP }
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(secondInstance, gameId, FoldAction())
+            waitActiveAndDoAction(thirdInstance, gameId, FoldAction())
+            waitActiveAndDoAction(buttonInstance, gameId, FoldAction())
+            waitActiveAndDoAction(smallBlindInstance, gameId, FoldAction())
+            waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(198))
+            waitUntil { game.deal.stage.type == Stage.FLOP }
+            waitActiveAndDoAction(bigBlindInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(400))
+            waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(200))
+            waitUntil { game.deal.stage.type == Stage.TERN }
+            waitActiveAndDoAction(bigBlindInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(firstInstance, gameId, FoldAction())
+            waitUntil { game.deal.finished }
+        }
+    }
+
+    @Test
+    fun `scenario 12`() {
+        val gameId = gameCreator.createDefaultGame(9)
+        val game = gameStorage.getById(gameId)
+        actionHelper.waitUntil { game.active }
+        val firstInstance = game.instances.first { instance -> instance.role == Role.FIRST }
+        val secondInstance = game.instances.first { instance -> instance.role == Role.SECOND }
+        val thirdInstance = game.instances.first { instance -> instance.role == Role.THIRD }
+        val fourthInstance = game.instances.first { instance -> instance.role == Role.FOURTH }
+        val fifthInstance = game.instances.first { instance -> instance.role == Role.FIFTH }
+        val sixthInstance = game.instances.first { instance -> instance.role == Role.SIXTH }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+
+        with(actionHelper) {
+            waitUntil { game.deal.stage.type == Stage.PRE_FLOP }
+            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(secondInstance, gameId, FoldAction())
+            waitActiveAndDoAction(thirdInstance, gameId, FoldAction())
+            waitActiveAndDoAction(fourthInstance, gameId, FoldAction())
+            waitActiveAndDoAction(fifthInstance, gameId, FoldAction())
+            waitActiveAndDoAction(sixthInstance, gameId, FoldAction())
+            waitActiveAndDoAction(buttonInstance, gameId, CallAction(200))
+            waitActiveAndDoAction(smallBlindInstance, gameId, CallAction(199))
+            waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(198))
+            waitUntil { game.deal.stage.type == Stage.FLOP }
+            waitActiveAndDoAction(smallBlindInstance, gameId, FoldAction())
+            waitActiveAndDoAction(bigBlindInstance, gameId, FoldAction())
+            waitActiveAndDoAction(firstInstance, gameId, FoldAction())
             waitUntil { game.deal.finished }
         }
     }
