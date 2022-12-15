@@ -10,6 +10,14 @@ fun MutableList<Instance>.firstByRole(role: Role): Instance {
     return this.first { instance -> instance.role == role }
 }
 
+fun MutableList<Instance>.isDealFinished(stage: Stage): Boolean {
+    return stage == Stage.RIVER || this.isOnePlayerLeft()
+}
+
+fun MutableList<Instance>.isOnePlayerLeft(): Boolean {
+    return this.removeFolded().size == 1
+}
+
 fun MutableList<Instance>.next(): () -> Instance {
     var currentIndex = 0
     val instanceForAction: () -> Instance = {
@@ -54,7 +62,7 @@ fun MutableList<Instance>.everyoneInAllIn(): Boolean {
 
 
 fun MutableList<Instance>.isStageFinished(stage: Stage): Boolean {
-    return allChecks(stage) || this.everyoneHasTheSameBet(stage) || this.everyoneInAllIn()
+    return allChecks(stage) || everyoneHasTheSameBet(stage) || everyoneInAllIn()
 }
 
 fun MutableList<Instance>.isStageNotFinished(stage: Stage): Boolean {

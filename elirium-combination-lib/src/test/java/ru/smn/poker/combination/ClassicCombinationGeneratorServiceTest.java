@@ -33,12 +33,12 @@ public class ClassicCombinationGeneratorServiceTest {
     }
 
     @Test
-    public void shouldGenerateKareCombination() {
+    public void shouldGenerateQuadsCombination() {
         for (int i = 0; i < 1_000; i++) {
-            final Combination kare = combinationGeneratorService.generate(CombinationType.KARE);
-            final Combination combination = combinationService.findCombination(kare.getCards());
-            Assertions.assertEquals(CombinationType.KARE, combination.getCombinationType());
-            Assertions.assertEquals(CardSizeData.COMBINATION_SIZE, kare.getCards().size());
+            final Combination quads = combinationGeneratorService.generate(CombinationType.QUADS);
+            final Combination combination = combinationService.findCombination(quads.getCards());
+            Assertions.assertEquals(CombinationType.QUADS, combination.getCombinationType());
+            Assertions.assertEquals(CardSizeData.COMBINATION_SIZE, quads.getCards().size());
         }
     }
 

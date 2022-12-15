@@ -10,26 +10,26 @@ import java.util.stream.Collectors;
 
 import static ru.smn.poker.combination.utils.CardUtils.findTheBiggestCardIgnoringFilter;
 
-class KareSearchStrategy implements SearchStrategy {
+class QuadsSearchStrategy implements SearchStrategy {
 
     @Override
     public Combination find(List<Card> cards) {
         final int firstIndexOfCard = 0;
 
-        final List<Card> kareCards = cards.stream()
+        final List<Card> quadsCards = cards.stream()
                 .collect(Collectors.groupingBy(Card::getPowerAsInt))
                 .entrySet()
                 .stream()
-                .filter(entry -> entry.getValue().size() == CardSizeData.KARE_SIZE)
+                .filter(entry -> entry.getValue().size() == CardSizeData.Quads_SIZE)
                 .peek(entry -> entry.getValue().add(findTheBiggestCardIgnoringFilter(cards, entry.getValue().get(firstIndexOfCard).getPower())))
                 .flatMap(entry -> entry.getValue().stream())
                 .collect(Collectors.toList());
 
-        if (kareCards.isEmpty()) {
+        if (quadsCards.isEmpty()) {
             return Combination.empty();
         }
 
-        return Combination.of(CombinationType.KARE, kareCards);
+        return Combination.of(CombinationType.QUADS, quadsCards);
 
     }
 }

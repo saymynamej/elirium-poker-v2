@@ -21,7 +21,7 @@ public class SearchAssistant {
         searchStrategies.put(CombinationType.STRAIGHT, new StraightSearchStrategy());
         searchStrategies.put(CombinationType.FLUSH, new FlushSearchStrategy());
         searchStrategies.put(CombinationType.FULL_HOUSE, new FullHouseSearchStrategy());
-        searchStrategies.put(CombinationType.KARE, new KareSearchStrategy());
+        searchStrategies.put(CombinationType.QUADS, new QuadsSearchStrategy());
         searchStrategies.put(CombinationType.STRAIGHT_FLUSH, new StraightFlushSearchStrategy());
         searchStrategies.put(CombinationType.FLUSH_ROYAL, new FlushRoyalSearchStrategy());
     }

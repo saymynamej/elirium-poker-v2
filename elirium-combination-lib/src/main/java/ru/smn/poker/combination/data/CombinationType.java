@@ -3,7 +3,8 @@ package ru.smn.poker.combination.data;
 public enum CombinationType {
     FLUSH_ROYAL(10),
     STRAIGHT_FLUSH(9),
-    KARE(8),
+    QUADS(8),
+
     FULL_HOUSE(7),
     FLUSH(6),
     STRAIGHT(5),

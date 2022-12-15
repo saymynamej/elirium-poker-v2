@@ -36,14 +36,14 @@ public class ClassicCombinationServiceTest {
     private static final List<Card> STRAIT_FLUSH_COMBINATION_2 = new ArrayList<>(Arrays.asList(Card.Q_S, Card.J_S, Card.TEN_S, Card.NINE_S, Card.EIGHT_S));
     private static final List<Card> STRAIT_FLUSH_WITH_ACE_FULL = new ArrayList<>(Arrays.asList(Card.A_H, Card.TWO_H, Card.THREE_H, Card.FOUR_H, Card.FIVE_H, Card.J_C, Card.K_H));
     private static final List<Card> STRAIT_FLUSH_WITH_ACE_COMBINATION = new ArrayList<>(Arrays.asList(Card.A_H, Card.FIVE_H, Card.FOUR_H, Card.THREE_H, Card.TWO_H));
-    private static final List<Card> KARE_FULL = new ArrayList<>(Arrays.asList(Card.NINE_C, Card.FOUR_H, Card.K_S, Card.SIX_C, Card.SIX_H, Card.SIX_S, Card.SIX_D));
-    private static final List<Card> KARE_COMBINATION = new ArrayList<>(Arrays.asList(Card.K_S, Card.SIX_C, Card.SIX_H, Card.SIX_S, Card.SIX_D));
-    private static final List<Card> KARE_FULL2 = new ArrayList<>(Arrays.asList(Card.A_C, Card.A_D, Card.A_S, Card.A_H, Card.TEN_C, Card.SIX_D, Card.K_H));
-    private static final List<Card> KARE_COMBINATION2 = new ArrayList<>(Arrays.asList(Card.A_C, Card.A_D, Card.A_S, Card.A_H, Card.K_H));
-    private static final List<Card> KARE_FULL3 = new ArrayList<>(Arrays.asList(Card.Q_C, Card.FOUR_H, Card.NINE_C, Card.NINE_H, Card.NINE_D, Card.NINE_S, Card.SIX_D));
-    private static final List<Card> KARE_COMBINATION3 = new ArrayList<>(Arrays.asList(Card.Q_C, Card.NINE_C, Card.NINE_H, Card.NINE_D, Card.NINE_S));
-    private static final List<Card> KARE_FULL4 = new ArrayList<>(Arrays.asList(Card.SEVEN_S, Card.FOUR_H, Card.SEVEN_C, Card.SIX_C, Card.SEVEN_D, Card.SEVEN_H, Card.A_D));
-    private static final List<Card> KARE_COMBINATION4 = new ArrayList<>(Arrays.asList(Card.A_D, Card.SEVEN_S, Card.SEVEN_C, Card.SEVEN_D, Card.SEVEN_H));
+    private static final List<Card> Quads_FULL = new ArrayList<>(Arrays.asList(Card.NINE_C, Card.FOUR_H, Card.K_S, Card.SIX_C, Card.SIX_H, Card.SIX_S, Card.SIX_D));
+    private static final List<Card> Quads_COMBINATION = new ArrayList<>(Arrays.asList(Card.K_S, Card.SIX_C, Card.SIX_H, Card.SIX_S, Card.SIX_D));
+    private static final List<Card> Quads_FULL2 = new ArrayList<>(Arrays.asList(Card.A_C, Card.A_D, Card.A_S, Card.A_H, Card.TEN_C, Card.SIX_D, Card.K_H));
+    private static final List<Card> Quads_COMBINATION2 = new ArrayList<>(Arrays.asList(Card.A_C, Card.A_D, Card.A_S, Card.A_H, Card.K_H));
+    private static final List<Card> Quads_FULL3 = new ArrayList<>(Arrays.asList(Card.Q_C, Card.FOUR_H, Card.NINE_C, Card.NINE_H, Card.NINE_D, Card.NINE_S, Card.SIX_D));
+    private static final List<Card> Quads_COMBINATION3 = new ArrayList<>(Arrays.asList(Card.Q_C, Card.NINE_C, Card.NINE_H, Card.NINE_D, Card.NINE_S));
+    private static final List<Card> Quads_FULL4 = new ArrayList<>(Arrays.asList(Card.SEVEN_S, Card.FOUR_H, Card.SEVEN_C, Card.SIX_C, Card.SEVEN_D, Card.SEVEN_H, Card.A_D));
+    private static final List<Card> Quads_COMBINATION4 = new ArrayList<>(Arrays.asList(Card.A_D, Card.SEVEN_S, Card.SEVEN_C, Card.SEVEN_D, Card.SEVEN_H));
     private static final List<Card> FLUSH_HEART_FULL = new ArrayList<>(Arrays.asList(Card.NINE_H, Card.A_H, Card.K_H, Card.TWO_H, Card.FIVE_H, Card.FOUR_H, Card.K_S));
     private static final List<Card> FLUSH_HEART_COMBINATION = new ArrayList<>(Arrays.asList(Card.A_H, Card.K_H, Card.NINE_H, Card.FIVE_H, Card.FOUR_H));
     private static final List<Card> FLUSH_DIAMOND_FULL = new ArrayList<>(Arrays.asList(Card.J_D, Card.TWO_D, Card.THREE_D, Card.SEVEN_D, Card.A_H, Card.A_C, Card.K_D));
@@ -170,31 +170,31 @@ public class ClassicCombinationServiceTest {
     }
 
     @Test
-    public void testKare() {
-        final Combination kare = checkSimpleCombinationService.findCombination(KARE_FULL);
-        assertEquals(CombinationType.KARE, kare.getCombinationType());
-        assertEquals(KARE_COMBINATION, kare.getCards());
+    public void testQuads() {
+        final Combination quads = checkSimpleCombinationService.findCombination(Quads_FULL);
+        assertEquals(CombinationType.QUADS, quads.getCombinationType());
+        assertEquals(Quads_COMBINATION, quads.getCards());
     }
 
     @Test
-    public void testKare2() {
-        final Combination kare = checkSimpleCombinationService.findCombination(KARE_FULL2);
-        assertEquals(CombinationType.KARE, kare.getCombinationType());
-        assertEquals(KARE_COMBINATION2, kare.getCards());
+    public void testQuads2() {
+        final Combination quads = checkSimpleCombinationService.findCombination(Quads_FULL2);
+        assertEquals(CombinationType.QUADS, quads.getCombinationType());
+        assertEquals(Quads_COMBINATION2, quads.getCards());
     }
 
     @Test
-    public void testKare3() {
-        final Combination kare = checkSimpleCombinationService.findCombination(KARE_FULL3);
-        assertEquals(CombinationType.KARE, kare.getCombinationType());
-        assertEquals(KARE_COMBINATION3, kare.getCards());
+    public void testQuads3() {
+        final Combination quads = checkSimpleCombinationService.findCombination(Quads_FULL3);
+        assertEquals(CombinationType.QUADS, quads.getCombinationType());
+        assertEquals(Quads_COMBINATION3, quads.getCards());
     }
 
     @Test
-    public void testKare4() {
-        final Combination kare = checkSimpleCombinationService.findCombination(KARE_FULL4);
-        assertEquals(CombinationType.KARE, kare.getCombinationType());
-        assertEquals(KARE_COMBINATION4, kare.getCards());
+    public void testQuads4() {
+        final Combination quads = checkSimpleCombinationService.findCombination(Quads_FULL4);
+        assertEquals(CombinationType.QUADS, quads.getCombinationType());
+        assertEquals(Quads_COMBINATION4, quads.getCards());
     }
 
     @Test

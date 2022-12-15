@@ -2,15 +2,9 @@ package ru.smn.poker.log
 
 import com.fasterxml.jackson.databind.ObjectMapper
 
-class EliriumLogger {
-    companion object {
-        private val objectMapper: ObjectMapper = ObjectMapper()
-        fun print(message: String) {
-            println(this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(Log(message)))
-        }
-    }
+val objectMapper: ObjectMapper = ObjectMapper()
 
-
-    data class Log(val message: String)
-
+fun print(message: String) {
+    println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(Log(message)))
 }
+data class Log(val message: String)

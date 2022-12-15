@@ -8,7 +8,6 @@ import ru.smn.poker.game.CreateGameRequest
 import ru.smn.poker.game.CreateGameResponse
 import ru.smn.poker.game.StartGameRequest
 import ru.smn.poker.game.StartGameResponse
-import ru.smn.poker.log.EliriumLogger
 import java.util.*
 
 @Service
@@ -26,12 +25,13 @@ class GameServiceImpl(
                     gameId = gameId,
                     instances = mutableListOf(),
                     actionHandler = actionHandler,
-                    gameSetup = gameSetup
+                    gameSetup = gameSetup,
+                    dealHandler = DealHandlerImpl()
                 )
             )
         }
 
-        EliriumLogger.print("game created. id: $gameId")
+        print("game created. id: $gameId")
 
         return CreateGameResponse(true, createGameRequest.countOfPlayer, gameId)
     }

@@ -1,14 +1,13 @@
 package ru.smn.poker.core
 
-import ru.smn.poker.actions.ActionType
 import ru.smn.poker.dto.*
-import ru.smn.poker.log.EliriumLogger
 import java.util.*
 
 
 class Game(
     private val gameSetup: GameSetup,
     private val actionHandler: ActionHandler,
+    private val dealHandler: DealHandler,
     val gameId: UUID,
     val instances: MutableList<Instance>,
     val deal: Deal = Deal(gameId),
@@ -22,13 +21,15 @@ class Game(
             while (!deal.finished) {
                 val stage = deal.stage.type
                 instances = instances.setUp(stage)
-                EliriumLogger.print("stage: $stage is started")
+                print("stage: $stage is started")
                 val nextInstanceFunction = instances.next()
                 while (instances.isStageNotFinished(stage)) {
                     actionHandler.waitAndHandle(deal, nextInstanceFunction())
                 }
-                if (stage == Stage.RIVER) {
+                dealHandler.handleDeal(deal)
+                if (instances.isDealFinished(stage)) {
                     deal.finished = true
+                    print("deal is finished: $deal")
                     return
                 }
                 deal.nextStage()

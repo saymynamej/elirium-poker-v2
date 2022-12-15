@@ -8,22 +8,22 @@ import ru.smn.poker.combination.utils.RandomUtils;
 
 import java.util.List;
 
-class KareStrategyGenerator implements GeneratorStrategy {
+class QuadsStrategyGenerator implements GeneratorStrategy {
 
     @Override
     public Combination generate() {
         final List<Card> cards = Card.getAllCardsAsList();
 
-        final Card randomCardForKare = RandomUtils.getRandomCard(cards);
+        final Card randomCardForQuads = RandomUtils.getRandomCard(cards);
 
-        final List<Card> kare = CardUtils.getCardsWithPower(cards, randomCardForKare.getPower(), 4);
+        final List<Card> quads = CardUtils.getCardsWithPower(cards, randomCardForQuads.getPower(), 4);
 
-        CardUtils.removeCardsWithPower(cards, randomCardForKare.getPower());
+        CardUtils.removeCardsWithPower(cards, randomCardForQuads.getPower());
 
         final Card highCard = RandomUtils.getRandomCard(cards);
 
-        kare.add(highCard);
+        quads.add(highCard);
 
-        return Combination.of(CombinationType.KARE, kare);
+        return Combination.of(CombinationType.QUADS, quads);
     }
 }
