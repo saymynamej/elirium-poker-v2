@@ -18,10 +18,8 @@ class WebSocketController(
     private val messageHandlerFacade: MessageHandlerFacade,
 ) {
 
-
-
     @SendTo("/output/poker/games")
-    @MessageMapping("/input/game/create")
+    @MessageMapping("/input/game/join")
     fun joinGame(@Payload joinGameRequest: JoinGameRequest) = gameService.joinGame(joinGameRequest)
 
     @SendTo("/output/poker/games")
