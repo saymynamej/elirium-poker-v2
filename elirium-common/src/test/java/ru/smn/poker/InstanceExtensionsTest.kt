@@ -3,13 +3,45 @@ package ru.smn.poker
 import org.junit.jupiter.api.Test
 import ru.smn.poker.actions.Action
 import ru.smn.poker.actions.CallAction
+import ru.smn.poker.actions.FoldAction
 import ru.smn.poker.actions.Role
 import ru.smn.poker.dto.*
+import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 
 class InstanceExtensionsTest {
+
+
+    @Test
+    fun shouldGetRightPlayer() {
+        val instances = mutableListOf(
+            Instance("test-0", role = Role.EMPTY),
+            Instance("test-1", role = Role.EMPTY).apply {
+                history[Stage.PRE_FLOP]!!.add(FoldAction())
+            },
+            Instance("test-2", role = Role.EMPTY),
+            Instance("test-3", role = Role.EMPTY),
+            Instance("test-4", role = Role.EMPTY),
+            Instance("test-5", role = Role.EMPTY),
+            Instance("test-6", role = Role.EMPTY),
+            Instance("test-7", role = Role.EMPTY),
+            Instance("test-8", role = Role.EMPTY),
+        )
+
+        val nextFunction = instances.next()
+        assertEquals("test-0", nextFunction().instanceName)
+        assertEquals("test-2", nextFunction().instanceName)
+        assertEquals("test-3", nextFunction().instanceName)
+        assertEquals("test-4", nextFunction().instanceName)
+        assertEquals("test-5", nextFunction().instanceName)
+        assertEquals("test-6", nextFunction().instanceName)
+        assertEquals("test-7", nextFunction().instanceName)
+        assertEquals("test-8", nextFunction().instanceName)
+        assertEquals("test-0", nextFunction().instanceName)
+    }
+
 
     @Test
     fun shouldTwistRoles() {

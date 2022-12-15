@@ -11,13 +11,31 @@ fun MutableList<Instance>.firstByRole(role: Role): Instance {
 }
 
 fun MutableList<Instance>.next(): () -> Instance {
-    var i = 0
+    var currentIndex = 0
     val instanceForAction: () -> Instance = {
-        if (i >= this.size) i = 0
-        this[i++]
+        val (index, instance) = tryToGetNextElement(this, currentIndex)
+        currentIndex = index
+        instance
     }
     return instanceForAction
 }
+
+fun tryToGetNextElement(instances: MutableList<Instance>, currentIndex: Int): IndexAndInstance {
+    var copyCurrentIndex = currentIndex
+    if (copyCurrentIndex >= instances.size) copyCurrentIndex = 0
+
+    val instance = instances[copyCurrentIndex]
+    if (instance.lastActionIs(ActionType.FOLD)) {
+        return tryToGetNextElement(instances, ++copyCurrentIndex)
+    }
+
+    ++copyCurrentIndex
+    return IndexAndInstance(copyCurrentIndex, instance)
+}
+
+
+data class IndexAndInstance(val index: Int, val instance: Instance)
+
 
 fun MutableList<Instance>.setUp(stage: Stage): MutableList<Instance> {
     return this.removeFolded()
