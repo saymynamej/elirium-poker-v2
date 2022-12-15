@@ -5,9 +5,22 @@ import ru.smn.poker.actions.ActionResponse
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.dto.Stage
+import ru.smn.poker.game.StartGameResponse
 
 @Service
 class SecretServiceImpl : SecretService {
+
+    override fun secretStartGameResponse(
+        targetInstanceName: String,
+        startGameResponse: StartGameResponse,
+    ): StartGameResponse {
+        return StartGameResponse(
+            startGameResponse.gameId,
+            secretDeal(startGameResponse.deal),
+            secretInstances(targetInstanceName, startGameResponse.instances)
+        )
+    }
+
     override fun secretActionResponse(
         targetInstanceName: String,
         actionResponse: ActionResponse,
