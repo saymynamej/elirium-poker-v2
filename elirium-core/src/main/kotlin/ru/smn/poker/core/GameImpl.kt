@@ -13,11 +13,11 @@ class GameImpl(
     override val gameId: UUID,
     override val instances: MutableList<Instance>,
     override var active: Boolean = false,
-    override val deal: Deal = Deal(gameId)
+    override val deal: Deal = Deal(gameId),
 ) : Game {
     override suspend fun start() {
         this.active = true
-        while (active) {
+        while (canStart()) {
             var instances = instances.distributeRoles().toMutableList()
             dealCustomizer.customize(gameId, deal, instances)
             while (!deal.finished) {
@@ -51,5 +51,9 @@ class GameImpl(
 
     override fun removeInstance(instance: Instance) {
         instances.remove(instance)
+    }
+
+    private fun canStart(): Boolean {
+        return this.active && this.instances.size > 2
     }
 }

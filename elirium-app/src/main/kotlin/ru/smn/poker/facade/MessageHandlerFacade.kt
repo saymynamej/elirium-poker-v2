@@ -22,7 +22,7 @@ class MessageHandlerFacade(
         instances.forEach { instance ->
             simpMessagingTemplate.convertAndSendToUser(
                 instance.name,
-                "/output/poker/games",
+                "/output/poker/actions",
                 secretService.secretActionResponse(instance.name, actionResponse)
             )
         }

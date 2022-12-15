@@ -4,10 +4,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.springframework.stereotype.Service
-import ru.smn.poker.game.CreateGameRequest
-import ru.smn.poker.game.CreateGameResponse
-import ru.smn.poker.game.StartGameRequest
-import ru.smn.poker.game.StartGameResponse
+import ru.smn.poker.dto.Instance
+import ru.smn.poker.game.*
 import ru.smn.poker.log.printC
 import java.util.*
 
@@ -19,6 +17,13 @@ class GameServiceImpl(
     private val dealHandler: DealHandler,
     private val actionWaiter: ActionWaiter,
 ) : GameService {
+
+    override fun joinGame(joinGameRequest: JoinGameRequest): JoinGameResponse {
+        val game = gameStorage.getById(joinGameRequest.gameId)
+        game.addInstance(Instance(joinGameRequest.instanceName))
+        return JoinGameResponse(true)
+    }
+
     override fun createGame(createGameRequest: CreateGameRequest): CreateGameResponse {
         val gameId = createGameRequest.gameId ?: UUID.randomUUID()
 

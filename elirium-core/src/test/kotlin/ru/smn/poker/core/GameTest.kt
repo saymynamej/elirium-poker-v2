@@ -414,4 +414,33 @@ class GameTest {
         }
     }
 
+    @Test
+    fun `scenario 13`() {
+        val gameId = gameCreator.createDefaultGame(3)
+        val game = gameStorage.getById(gameId)
+        actionHelper.waitUntil { game.active }
+        val buttonInstance = game.instances.first { instance -> instance.role == Role.BUTTON }
+        val smallBlindInstance = game.instances.first { instance -> instance.role == Role.SMALL_BLIND }
+        val bigBlindInstance = game.instances.first { instance -> instance.role == Role.BIG_BLIND }
+
+        with(actionHelper) {
+            waitUntil { game.deal.stage.type == Stage.PRE_FLOP }
+            waitActiveAndDoAction(buttonInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(smallBlindInstance, gameId, CallAction(199))
+            waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(198))
+            waitUntil { game.deal.stage.type == Stage.FLOP }
+            waitActiveAndDoAction(smallBlindInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(bigBlindInstance, gameId, RaiseAction(600))
+            waitActiveAndDoAction(buttonInstance, gameId, FoldAction())
+            waitActiveAndDoAction(smallBlindInstance, gameId, RaiseAction(400))
+            waitUntil { game.deal.stage.type == Stage.TERN }
+            waitActiveAndDoAction(smallBlindInstance, gameId, CheckAction())
+            waitActiveAndDoAction(bigBlindInstance, gameId, CheckAction())
+            waitUntil { game.deal.stage.type == Stage.RIVER }
+            waitActiveAndDoAction(smallBlindInstance, gameId, CheckAction())
+            waitActiveAndDoAction(bigBlindInstance, gameId, CheckAction())
+            waitUntil { game.deal.finished }
+        }
+    }
+
 }

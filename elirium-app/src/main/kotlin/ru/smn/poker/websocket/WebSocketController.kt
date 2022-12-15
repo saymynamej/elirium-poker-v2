@@ -9,6 +9,7 @@ import ru.smn.poker.actions.ActionRequest
 import ru.smn.poker.core.GameService
 import ru.smn.poker.facade.MessageHandlerFacade
 import ru.smn.poker.game.CreateGameRequest
+import ru.smn.poker.game.JoinGameRequest
 import ru.smn.poker.game.StartGameRequest
 
 @RestController
@@ -17,9 +18,15 @@ class WebSocketController(
     private val messageHandlerFacade: MessageHandlerFacade,
 ) {
 
+
+
     @SendTo("/output/poker/games")
     @MessageMapping("/input/game/create")
-    fun createGame(@Payload createGame: CreateGameRequest) = gameService.createGame(createGame)
+    fun joinGame(@Payload joinGameRequest: JoinGameRequest) = gameService.joinGame(joinGameRequest)
+
+    @SendTo("/output/poker/games")
+    @MessageMapping("/input/game/create")
+    fun createGame(@Payload createGameRequest: CreateGameRequest) = gameService.createGame(createGameRequest)
 
     @MessageMapping("/input/game/start")
     fun startGame(simpMessageHeaderAccessor: SimpMessageHeaderAccessor, @Payload startGameRequest: StartGameRequest) {
