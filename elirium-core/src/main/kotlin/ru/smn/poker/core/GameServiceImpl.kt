@@ -17,6 +17,7 @@ class GameServiceImpl(
     private val dealCustomizer: DealCustomizer,
     private val actionHandler: ActionHandler,
     private val dealHandler: DealHandler,
+    private val actionWaiter: ActionWaiter,
 ) : GameService {
     override fun createGame(createGameRequest: CreateGameRequest): CreateGameResponse {
         val gameId = createGameRequest.gameId ?: UUID.randomUUID()
@@ -28,7 +29,8 @@ class GameServiceImpl(
                     instances = mutableListOf(),
                     actionHandler = actionHandler,
                     dealCustomizer = dealCustomizer,
-                    dealHandler = dealHandler
+                    dealHandler = dealHandler,
+                    actionWaiter = actionWaiter
                 )
             )
         }

@@ -1,8 +1,6 @@
 package ru.smn.poker.core
 
-import org.awaitility.Awaitility
 import org.springframework.stereotype.Service
-import ru.smn.poker.actions.ActionType
 import ru.smn.poker.actions.BetAction
 import ru.smn.poker.actions.NoAction
 import ru.smn.poker.actions.Role
@@ -10,20 +8,12 @@ import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.dto.Stage
 import ru.smn.poker.log.printC
-import java.util.concurrent.TimeUnit
 
 @Service
 class ActionHandlerImpl : ActionHandler {
-    private fun waitInstanceAction(instance: Instance) {
-        Awaitility.await()
-            .atMost(instance.timeBank.toLong(), TimeUnit.SECONDS)
-            .until { instance.action.type != ActionType.NO_ACTION }
-    }
 
-    override suspend fun waitAndHandle(deal: Deal, instance: Instance) {
-        instance.active = true
+    override suspend fun handle(deal: Deal, instance: Instance) {
         printC("active player is: $instance")
-        waitInstanceAction(instance)
         val action = instance.action
         deal.bank += action.count()
         instance.chips -= action.count()

@@ -23,7 +23,9 @@ import kotlin.test.Test
         CardContainer::class,
         ActionHelper::class,
         GameCreator::class,
-        ClassicCombinationService::class
+        ClassicCombinationService::class,
+        DealHandlerImpl::class,
+        ActionWaiterImpl::class
     ]
 )
 @ExtendWith(SpringExtension::class)

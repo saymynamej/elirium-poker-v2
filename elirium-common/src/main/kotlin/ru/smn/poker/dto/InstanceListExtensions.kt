@@ -5,6 +5,7 @@ import ru.smn.poker.actions.Role
 
 private const val NOT_FOUND_INDEX: Int = -1
 private const val MAXIMUM_RETRIES_FOR_FINDING_PLAYER: Int = 18
+data class IndexAndInstance(val index: Int, val instance: Instance)
 
 fun MutableList<Instance>.isDealFinished(stage: Stage): Boolean {
     return stage == Stage.RIVER || this.isOnePlayerLeft()
@@ -38,14 +39,6 @@ fun tryToGetNextElement(instances: MutableList<Instance>, currentIndex: Int, inv
         return tryToGetNextElement(instances, ++copyCurrentIndex, invokedTimes.inc())
     }
     return IndexAndInstance(++copyCurrentIndex, instance)
-}
-
-data class IndexAndInstance(val index: Int, val instance: Instance)
-
-fun MutableList<Instance>.setUp(stage: Stage): MutableList<Instance> {
-    return this.removeFolded()
-        .sortByStage(stage)
-        .toMutableList()
 }
 
 fun MutableList<Instance>.allChecks(stage: Stage): Boolean {

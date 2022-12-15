@@ -9,6 +9,7 @@ class GameImpl(
     private val dealCustomizer: DealCustomizer,
     private val actionHandler: ActionHandler,
     private val dealHandler: DealHandler,
+    private val actionWaiter: ActionWaiter,
     val gameId: UUID,
     val instances: MutableList<Instance>,
     val deal: Deal = Deal(gameId),
@@ -21,11 +22,13 @@ class GameImpl(
             dealCustomizer.customize(gameId, deal, instances)
             while (!deal.finished) {
                 val stage = deal.stage.type
-                instances = instances.setUp(stage)
+                instances = instances.sortByStage(stage)
                 printC("stage: $stage is started")
                 val nextInstanceFunction = instances.nextInstanceFunction()
                 while (instances.isStageNotFinished(stage)) {
-                    actionHandler.waitAndHandle(deal, nextInstanceFunction())
+                    val instance = nextInstanceFunction()
+                    actionWaiter.wait(instance)
+                    actionHandler.handle(deal, instance)
                 }
                 if (instances.isDealFinished(stage)) {
                     deal.finished = true
