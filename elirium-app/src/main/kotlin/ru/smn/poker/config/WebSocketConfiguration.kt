@@ -9,7 +9,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
-class WebSocketConfiguration : WebSocketMessageBrokerConfigurer {
+class WebSocketConfiguration(private val principalHandShaker: PrincipalHandShaker) : WebSocketMessageBrokerConfigurer {
 
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
         config.enableSimpleBroker("/poker")
@@ -17,9 +17,11 @@ class WebSocketConfiguration : WebSocketMessageBrokerConfigurer {
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
         registry.addEndpoint("/ws")
+            .setHandshakeHandler(principalHandShaker)
             .setAllowedOriginPatterns("*")
 
         registry.addEndpoint("/ws")
+            .setHandshakeHandler(principalHandShaker)
             .setAllowedOriginPatterns("*")
             .withSockJS()
     }

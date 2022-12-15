@@ -10,10 +10,10 @@ class GameImpl(
     private val actionHandler: ActionHandler,
     private val dealHandler: DealHandler,
     private val actionWaiter: ActionWaiter,
-    val gameId: UUID,
-    val instances: MutableList<Instance>,
-    val deal: Deal = Deal(gameId),
-    var active: Boolean = false,
+    override val gameId: UUID,
+    override val instances: MutableList<Instance>,
+    override var active: Boolean = false,
+    override val deal: Deal = Deal(gameId)
 ) : Game {
     override suspend fun start() {
         this.active = true

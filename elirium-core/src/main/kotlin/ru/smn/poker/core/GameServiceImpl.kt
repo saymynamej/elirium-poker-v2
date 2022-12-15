@@ -50,6 +50,6 @@ class GameServiceImpl(
 
         gameStorage.addJob(game, job)
 
-        return StartGameResponse(gameId)
+        return StartGameResponse(gameId, game.deal, game.instances)
     }
 }

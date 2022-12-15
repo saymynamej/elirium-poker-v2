@@ -21,7 +21,7 @@ class AddMockInstances(
         gameService.createGame(
             CreateGameRequest(GameType.HOLDEM, 9, gameId)
         )
-        instanceService.addInstance(gameId, Instance("1", chips = 5000))
+        instanceService.addInstance(gameId, Instance("0040073d-2634-4f1d-8bc9-e1aa2ab20740", chips = 5000))
         instanceService.addInstance(gameId, Instance("2", chips = 5000))
         instanceService.addInstance(gameId, Instance("3", chips = 5000))
         gameService.startGame(StartGameRequest(gameId))

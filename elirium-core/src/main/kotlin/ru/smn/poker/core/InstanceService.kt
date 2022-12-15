@@ -13,7 +13,6 @@ class InstanceService(val gameStorage: GameStorage) {
         instances.forEach { instance ->
             game.addInstance(instance)
         }
-
     }
 
     fun addInstance(gameId: UUID, instance: Instance) {

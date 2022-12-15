@@ -7,5 +7,5 @@ import java.util.*
 
 interface ActionService {
     fun doAction(actionRequest: ActionRequest): ActionResponse
-    fun doAction(gameId: UUID, instanceName: String, action: Action)
+    fun doAction(gameId: UUID, instanceName: String, action: Action): Game
 }
