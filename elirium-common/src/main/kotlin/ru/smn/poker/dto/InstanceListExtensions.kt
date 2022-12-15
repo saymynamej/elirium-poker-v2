@@ -62,7 +62,7 @@ fun MutableList<Instance>.everyoneInAllIn(): Boolean {
 
 
 fun MutableList<Instance>.isStageFinished(stage: Stage): Boolean {
-    return allChecks(stage) || everyoneHasTheSameBet(stage) || everyoneInAllIn()
+    return allChecks(stage) || everyoneHasTheSameBet(stage) || everyoneInAllIn() || isOnePlayerLeft()
 }
 
 fun MutableList<Instance>.isStageNotFinished(stage: Stage): Boolean {
