@@ -1,10 +1,12 @@
 package ru.smn.poker.dto
 
 import ru.smn.poker.actions.ActionType
+import ru.smn.poker.actions.CountAction
 import ru.smn.poker.actions.Role
 
 private const val NOT_FOUND_INDEX: Int = -1
 private const val MAXIMUM_RETRIES_FOR_FINDING_PLAYER: Int = 18
+
 data class IndexAndInstance(val index: Int, val instance: Instance)
 
 fun MutableList<Instance>.isDealFinished(stage: Stage): Boolean {
@@ -64,7 +66,11 @@ fun MutableList<Instance>.everyoneHasTheSameBet(stage: Stage): Boolean {
 
     val bets = removedFoldedInstances
         .map { instance -> instance.history[stage] }
-        .map { actions -> actions!!.sumOf { action -> action.count() } }
+        .map { actions ->
+            actions!!
+                .filterIsInstance<CountAction>()
+                .sumOf { action -> action.count }
+        }
 
     val bigBlindHasOneBet = stage == Stage.PRE_FLOP && removedFoldedInstances
         .filter { instance -> instance.role == Role.BIG_BLIND }

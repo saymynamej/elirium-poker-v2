@@ -17,6 +17,7 @@ data class Instance(
     var cards: MutableList<Card> = mutableListOf(),
     var chips: Long = 0,
 ) {
+    fun isBigBlind() = this.role == Role.BIG_BLIND
 
     fun lastActionIs(stage: Stage, actionType: ActionType): Boolean {
         return actionType == history[stage]!!.lastOrNull()?.type

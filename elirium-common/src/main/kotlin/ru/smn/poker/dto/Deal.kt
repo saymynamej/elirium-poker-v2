@@ -7,6 +7,7 @@ data class Deal(
     var gameId: UUID,
     var bigBlindBet: Long = 2,
     var smallBlindBet: Long = 1,
+    var lastBet: Long = 0,
     var flop1: Card? = null,
     var flop2: Card? = null,
     var flop3: Card? = null,
@@ -20,6 +21,7 @@ data class Deal(
     fun nextStage(): StageStatus {
         val nexStage = stage.next()
         this.stage = StageStatus(nexStage, false)
+        this.lastBet = 0L
         return this.stage
     }
 

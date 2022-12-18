@@ -1,6 +1,5 @@
 package ru.smn.poker.actions
 
-data class BetAction(private val count: Long) : Action {
-    override fun count() = this.count
+data class BetAction(override val count: Long) : CountAction {
     override val type = ActionType.BET
 }

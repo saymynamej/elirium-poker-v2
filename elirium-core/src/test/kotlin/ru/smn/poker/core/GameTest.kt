@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import ru.smn.poker.actions.*
+import ru.smn.poker.actions.strategies.*
 import ru.smn.poker.combination.CardContainer
 import ru.smn.poker.combination.ClassicCombinationService
 import ru.smn.poker.dto.Stage
 import ru.smn.poker.helper.ActionHelper
+import ru.smn.poker.spring.ActionStrategiesConfiguration
 import java.util.*
 import kotlin.test.Test
 
@@ -25,7 +27,14 @@ import kotlin.test.Test
         GameCreator::class,
         ClassicCombinationService::class,
         DealHandlerImpl::class,
-        ActionWaiterImpl::class
+        ActionWaiterImpl::class,
+        BetStrategy::class,
+        CallStrategy::class,
+        RaiseStrategy::class,
+        CheckStrategy::class,
+        AllInStrategy::class,
+        FoldStrategy::class,
+        ActionStrategiesConfiguration::class
     ]
 )
 @ExtendWith(SpringExtension::class)

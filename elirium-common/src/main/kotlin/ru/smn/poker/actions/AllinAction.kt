@@ -1,6 +1,5 @@
 package ru.smn.poker.actions
 
-class AllinAction(private val count: Long) : Action {
-    override fun count() = this.count
+class AllinAction(override val count: Long) : CountAction {
     override val type = ActionType.ALL_IN
 }
