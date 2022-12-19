@@ -18,7 +18,7 @@ class ActionHandlerImpl(private val strategies: Map<ActionType, ActionStrategy>)
         if (action is CountAction) {
             deal.bank += action.count
             instance.chips -= action.count
-            deal.lastBet = action.count
+            deal.lastBet = instance.sumOfActionsByStage(deal.stage.type) + action.count
         }
         instance.history[deal.stage.type]!!.add(action)
         printC("handle action: $action, by instance: $instance, data: $deal")

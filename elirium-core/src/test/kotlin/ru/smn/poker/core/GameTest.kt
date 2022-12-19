@@ -133,13 +133,13 @@ class GameTest {
             waitActiveAndDoAction(bigBlindInstance, gameId, FoldAction())
             waitActiveAndDoAction(firstInstance, gameId, CallAction(200))
             waitUntil { game.deal.stage.type == Stage.FLOP }
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(firstInstance, gameId, BetAction(200))
             waitActiveAndDoAction(buttonInstance, gameId, CallAction(200))
             waitUntil { game.deal.stage.type == Stage.TERN }
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(firstInstance, gameId, BetAction(200))
             waitActiveAndDoAction(buttonInstance, gameId, CallAction(200))
             waitUntil { game.deal.stage.type == Stage.RIVER }
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(firstInstance, gameId, BetAction(200))
             waitActiveAndDoAction(buttonInstance, gameId, CallAction(200))
             waitUntil { game.deal.finished }
         }
@@ -277,29 +277,29 @@ class GameTest {
             waitActiveAndDoAction(firstInstance, gameId, CallAction(90))
             waitActiveAndDoAction(secondInstance, gameId, CallAction(90))
             waitUntil { game.deal.stage.type == Stage.FLOP }
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(100))
+            waitActiveAndDoAction(firstInstance, gameId, BetAction(100))
             waitActiveAndDoAction(secondInstance, gameId, RaiseAction(200))
             waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(1000))
             waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
             waitActiveAndDoAction(firstInstance, gameId, CallAction(900))
             waitActiveAndDoAction(secondInstance, gameId, CallAction(800))
             waitUntil { game.deal.stage.type == Stage.TERN }
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(1000))
+            waitActiveAndDoAction(firstInstance, gameId, BetAction(1000))
             waitActiveAndDoAction(secondInstance, gameId, RaiseAction(4000))
-            waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(4000))
-            waitActiveAndDoAction(buttonInstance, gameId, CallAction(8000))
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(7000))
-            waitActiveAndDoAction(secondInstance, gameId, RaiseAction(4000))
-            waitActiveAndDoAction(thirdInstance, gameId, RaiseAction(4000))
+            waitActiveAndDoAction(thirdInstance, gameId, CallAction(4000))
+            waitActiveAndDoAction(buttonInstance, gameId, RaiseAction(8000))
+            waitActiveAndDoAction(firstInstance, gameId, CallAction(7000))
+            waitActiveAndDoAction(secondInstance, gameId, CallAction(4000))
+            waitActiveAndDoAction(thirdInstance, gameId, CallAction(4000))
             waitUntil { game.deal.stage.type == Stage.RIVER }
 
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(10_000))
+            waitActiveAndDoAction(firstInstance, gameId, BetAction(10_000))
             waitActiveAndDoAction(secondInstance, gameId, RaiseAction(50_000))
             waitActiveAndDoAction(thirdInstance, gameId, FoldAction())
             waitActiveAndDoAction(buttonInstance, gameId, FoldAction())
             waitActiveAndDoAction(firstInstance, gameId, RaiseAction(100_000))
             waitActiveAndDoAction(secondInstance, gameId, RaiseAction(500_000))
-            waitActiveAndDoAction(firstInstance, gameId, RaiseAction(440_000))
+            waitActiveAndDoAction(firstInstance, gameId, CallAction(440_000))
             waitUntil { game.deal.finished }
         }
     }
@@ -379,11 +379,11 @@ class GameTest {
             waitActiveAndDoAction(smallBlindInstance, gameId, FoldAction())
             waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(198))
             waitUntil { game.deal.stage.type == Stage.FLOP }
-            waitActiveAndDoAction(bigBlindInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(bigBlindInstance, gameId, BetAction(200))
             waitActiveAndDoAction(firstInstance, gameId, RaiseAction(400))
             waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(200))
             waitUntil { game.deal.stage.type == Stage.TERN }
-            waitActiveAndDoAction(bigBlindInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(bigBlindInstance, gameId, BetAction(200))
             waitActiveAndDoAction(firstInstance, gameId, FoldAction())
             waitUntil { game.deal.finished }
         }
@@ -438,10 +438,10 @@ class GameTest {
             waitActiveAndDoAction(smallBlindInstance, gameId, CallAction(199))
             waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(198))
             waitUntil { game.deal.stage.type == Stage.FLOP }
-            waitActiveAndDoAction(smallBlindInstance, gameId, RaiseAction(200))
+            waitActiveAndDoAction(smallBlindInstance, gameId, BetAction(200))
             waitActiveAndDoAction(bigBlindInstance, gameId, RaiseAction(600))
             waitActiveAndDoAction(buttonInstance, gameId, FoldAction())
-            waitActiveAndDoAction(smallBlindInstance, gameId, RaiseAction(400))
+            waitActiveAndDoAction(smallBlindInstance, gameId, CallAction(400))
             waitUntil { game.deal.stage.type == Stage.TERN }
             waitActiveAndDoAction(smallBlindInstance, gameId, CheckAction())
             waitActiveAndDoAction(bigBlindInstance, gameId, CheckAction())
