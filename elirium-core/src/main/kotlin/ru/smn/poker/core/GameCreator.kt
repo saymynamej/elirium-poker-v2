@@ -24,7 +24,7 @@ class GameCreator(
         )
 
         val listOfInstances = (1..countOfPlayer).map {
-            Instance("test-0$it")
+            Instance("test-0$it", chips = 1_000_000L)
         }.toList()
 
         with(instanceService) {

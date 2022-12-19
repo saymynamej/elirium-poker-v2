@@ -179,17 +179,17 @@ class GameTest {
             waitActiveAndDoAction(smallBlindInstance, gameId, CallAction(999))
             waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(998))
             waitUntil { game.deal.stage.type == Stage.FLOP }
-            waitActiveAndDoAction(smallBlindInstance, gameId, RaiseAction(1000))
+            waitActiveAndDoAction(smallBlindInstance, gameId, BetAction(1000))
             waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(1000))
             waitActiveAndDoAction(firstInstance, gameId, CallAction(1000))
             waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
             waitUntil { game.deal.stage.type == Stage.TERN }
-            waitActiveAndDoAction(smallBlindInstance, gameId, RaiseAction(1000))
+            waitActiveAndDoAction(smallBlindInstance, gameId, BetAction(1000))
             waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(1000))
             waitActiveAndDoAction(firstInstance, gameId, CallAction(1000))
             waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
             waitUntil { game.deal.stage.type == Stage.RIVER }
-            waitActiveAndDoAction(smallBlindInstance, gameId, RaiseAction(1000))
+            waitActiveAndDoAction(smallBlindInstance, gameId, BetAction(1000))
             waitActiveAndDoAction(bigBlindInstance, gameId, CallAction(1000))
             waitActiveAndDoAction(firstInstance, gameId, CallAction(1000))
             waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
@@ -215,13 +215,13 @@ class GameTest {
             waitActiveAndDoAction(bigBlindInstance, gameId, FoldAction())
             waitUntil { game.deal.stage.type == Stage.FLOP }
             waitActiveAndDoAction(firstInstance, gameId, BetAction(1000))
-            waitActiveAndDoAction(buttonInstance, gameId, BetAction(1000))
+            waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
             waitUntil { game.deal.stage.type == Stage.TERN }
             waitActiveAndDoAction(firstInstance, gameId, BetAction(1000))
-            waitActiveAndDoAction(buttonInstance, gameId, BetAction(1000))
+            waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
             waitUntil { game.deal.stage.type == Stage.RIVER }
             waitActiveAndDoAction(firstInstance, gameId, BetAction(1000))
-            waitActiveAndDoAction(buttonInstance, gameId, BetAction(1000))
+            waitActiveAndDoAction(buttonInstance, gameId, CallAction(1000))
             waitUntil { game.deal.finished }
         }
 
