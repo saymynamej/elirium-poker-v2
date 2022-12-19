@@ -5,5 +5,5 @@ import java.util.*
 data class CreateGameResponse(
     val success: Boolean,
     val countOfPlayers: Byte,
-    val gameId: UUID
+    val gameId: UUID,
 )

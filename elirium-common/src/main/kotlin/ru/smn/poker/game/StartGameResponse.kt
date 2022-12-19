@@ -7,5 +7,5 @@ import java.util.*
 data class StartGameResponse(
     val gameId: UUID,
     val deal: Deal,
-    val instances: List<Instance>
+    val instances: List<Instance>,
 )

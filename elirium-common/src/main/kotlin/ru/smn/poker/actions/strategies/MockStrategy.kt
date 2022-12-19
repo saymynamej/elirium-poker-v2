@@ -3,7 +3,6 @@ package ru.smn.poker.actions.strategies
 import ru.smn.poker.actions.ActionType
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
-import javax.swing.Action
 
 class MockStrategy : ActionStrategy {
     override val type = ActionType.NO_ACTION

@@ -17,7 +17,6 @@ class RaiseStrategy : ActionStrategy {
                 return
             }
         }
-
         throw ForbiddenActionException(instance.action.type.name)
     }
 }

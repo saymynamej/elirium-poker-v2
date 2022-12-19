@@ -1,4 +1,4 @@
-package ru.smn.poker.config
+package ru.smn.poker.spring
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

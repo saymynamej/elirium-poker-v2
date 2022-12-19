@@ -13,7 +13,7 @@ class MessageHandlerFacade(
     private val simpMessagingTemplate: SimpMessagingTemplate,
     private val actionService: ActionService,
     private val secretService: SecretService,
-    private val gameService: GameService
+    private val gameService: GameService,
 ) {
     fun doAction(actionRequest: ActionRequest) {
         val actionResponse = actionService.doAction(actionRequest)

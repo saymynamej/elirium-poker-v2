@@ -9,5 +9,5 @@ data class ActionResponse(
     val gameId: UUID,
     val playerName: String,
     val deal: Deal,
-    val instances: List<Instance>
+    val instances: List<Instance>,
 )

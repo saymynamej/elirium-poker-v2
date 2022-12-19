@@ -19,6 +19,7 @@ dependencies {
     implementation("org.awaitility:awaitility:4.2.0")
     implementation(project(":elirium-combination-lib"))
     testImplementation(kotlin("test"))
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 }
 
 tasks.test {
