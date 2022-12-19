@@ -14,6 +14,9 @@ class CheckStrategy : ActionStrategy {
         val stage = deal.stage.type
         if (stage.isPreFlop()) {
             if (instance.isBigBlind()) {
+                if (deal.lastBet == deal.bigBlindBet - deal.smallBlindBet) {
+                    return
+                }
                 if (deal.lastBet == deal.bigBlindBet) {
                     return
                 }

@@ -13,10 +13,10 @@ class CallStrategy : ActionStrategy {
     override val type = ActionType.CALL
     override fun invoke(instance: Instance, deal: Deal) {
         val action = instance.action as CountAction
-        if (deal.lastBet == action.count) {
+        val sumOfBets = instance.sumOfActionsByStage(deal.stage.type)
+        if (sumOfBets + action.count == deal.lastBet) {
             return
         }
         throw ForbiddenActionException(action.type.name)
-
     }
 }

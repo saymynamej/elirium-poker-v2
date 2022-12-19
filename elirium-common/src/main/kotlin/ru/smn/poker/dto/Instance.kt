@@ -1,9 +1,6 @@
 package ru.smn.poker.dto
 
-import ru.smn.poker.actions.Action
-import ru.smn.poker.actions.ActionType
-import ru.smn.poker.actions.NoAction
-import ru.smn.poker.actions.Role
+import ru.smn.poker.actions.*
 import ru.smn.poker.combination.data.Card
 
 data class Instance(
@@ -18,6 +15,13 @@ data class Instance(
     var chips: Long = 0,
 ) {
     fun isBigBlind() = this.role == Role.BIG_BLIND
+    fun isSmallBlind() = this.role == Role.SMALL_BLIND
+
+    fun sumOfActionsByStage(stage: Stage): Long {
+        return history[stage]!!.filterIsInstance<CountAction>()
+            .map { countAction -> countAction.count }
+            .reduceOrNull { action1, action2 -> action1.plus(action2) } ?: 0L
+    }
 
     fun lastActionIs(stage: Stage, actionType: ActionType): Boolean {
         return actionType == history[stage]!!.lastOrNull()?.type
