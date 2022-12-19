@@ -1,8 +1,12 @@
 package ru.smn.poker.core
 
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import ru.smn.poker.actions.*
 import ru.smn.poker.actions.strategies.*
@@ -10,7 +14,6 @@ import ru.smn.poker.combination.CardContainer
 import ru.smn.poker.combination.ClassicCombinationService
 import ru.smn.poker.dto.Stage
 import ru.smn.poker.helper.ActionHelper
-import ru.smn.poker.spring.ActionStrategiesConfiguration
 import java.util.*
 import kotlin.test.Test
 
@@ -27,14 +30,7 @@ import kotlin.test.Test
         GameCreator::class,
         ClassicCombinationService::class,
         DealHandlerImpl::class,
-        ActionWaiterImpl::class,
-        BetStrategy::class,
-        CallStrategy::class,
-        RaiseStrategy::class,
-        CheckStrategy::class,
-        AllInStrategy::class,
-        FoldStrategy::class,
-        ActionStrategiesConfiguration::class
+        ActionWaiterImpl::class
     ]
 )
 @ExtendWith(SpringExtension::class)
@@ -49,6 +45,14 @@ class GameTest {
     @Autowired
     private lateinit var gameCreator: GameCreator
 
+    @MockBean
+    private lateinit var actionFactory: ActionFactory
+
+    @BeforeEach
+    fun setUp() {
+        `when`(actionFactory.getByActionType(org.mockito.kotlin.any()))
+            .thenReturn(MockStrategy())
+    }
 
     @Test
     fun `scenario 1`() {

@@ -1,20 +1,23 @@
 package ru.smn.poker.core
 
 import org.springframework.stereotype.Service
-import ru.smn.poker.actions.*
-import ru.smn.poker.actions.strategies.ActionStrategy
+import ru.smn.poker.actions.BetAction
+import ru.smn.poker.actions.CountAction
+import ru.smn.poker.actions.NoAction
+import ru.smn.poker.actions.Role
+import ru.smn.poker.actions.strategies.ActionFactory
 import ru.smn.poker.dto.Deal
 import ru.smn.poker.dto.Instance
 import ru.smn.poker.dto.Stage
 import ru.smn.poker.log.printC
 
 @Service
-class ActionHandlerImpl(private val strategies: Map<ActionType, ActionStrategy>) : ActionHandler {
+class ActionHandlerImpl(private val actionFactory: ActionFactory) : ActionHandler {
 
     override suspend fun handle(deal: Deal, instance: Instance) {
         printC("active player is: $instance")
         val action = instance.action
-        strategies[action.type]!!.invoke(instance, deal)
+        actionFactory.getByActionType(action.type).invoke(instance, deal)
         if (action is CountAction) {
             deal.bank += action.count
             instance.chips -= action.count
