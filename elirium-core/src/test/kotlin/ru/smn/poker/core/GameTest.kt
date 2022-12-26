@@ -25,7 +25,8 @@ import kotlin.test.Test
         GameCreator::class,
         ClassicCombinationService::class,
         DealHandlerImpl::class,
-        ActionWaiterImpl::class
+        ActionWaiterImpl::class,
+        BankTimeManagerImpl::class
     ]
 )
 @ExtendWith(SpringExtension::class)
