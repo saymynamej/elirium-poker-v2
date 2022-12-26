@@ -16,6 +16,7 @@ class GameServiceImpl(
     private val actionHandler: ActionHandler,
     private val dealHandler: DealHandler,
     private val actionWaiter: ActionWaiter,
+    private val bankTimeManager: BankTimeManager
 ) : GameService {
 
     override fun joinGame(joinGameRequest: JoinGameRequest): JoinGameResponse {
@@ -35,7 +36,8 @@ class GameServiceImpl(
                     actionHandler = actionHandler,
                     dealCustomizer = dealCustomizer,
                     dealHandler = dealHandler,
-                    actionWaiter = actionWaiter
+                    actionWaiter = actionWaiter,
+                    bankTimeManager = bankTimeManager
                 )
             )
         }

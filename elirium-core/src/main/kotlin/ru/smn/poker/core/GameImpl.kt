@@ -10,6 +10,7 @@ class GameImpl(
     private val actionHandler: ActionHandler,
     private val dealHandler: DealHandler,
     private val actionWaiter: ActionWaiter,
+    private val bankTimeManager: BankTimeManager,
     override val gameId: UUID,
     override val instances: MutableList<Instance>,
     override var active: Boolean = false,
@@ -27,7 +28,9 @@ class GameImpl(
                 val nextInstanceFunction = instances.nextInstanceFunction()
                 while (instances.isStageNotFinished(stage)) {
                     val instance = nextInstanceFunction()
+                    val startTime = System.currentTimeMillis()
                     actionWaiter.wait(instance)
+                    bankTimeManager.calculatingTime(instance, startTime)
                     actionHandler.handle(deal, instance)
                 }
                 if (instances.isDealFinished(stage)) {
