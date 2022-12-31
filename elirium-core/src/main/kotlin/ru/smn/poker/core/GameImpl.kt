@@ -28,9 +28,8 @@ class GameImpl(
                 val nextInstanceFunction = instances.nextInstanceFunction()
                 while (instances.isStageNotFinished(stage)) {
                     val instance = nextInstanceFunction()
-                    val startTime = System.currentTimeMillis()
-                    actionWaiter.wait(instance)
-                    bankTimeManager.calculatingTime(instance, startTime)
+                    val waitingTime = actionWaiter.wait(instance)
+                    bankTimeManager.calculatingTime(instance,waitingTime)
                     actionHandler.handle(deal, instance)
                 }
                 if (instances.isDealFinished(stage)) {

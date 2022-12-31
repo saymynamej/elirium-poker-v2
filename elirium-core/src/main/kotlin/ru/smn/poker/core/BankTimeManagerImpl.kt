@@ -5,12 +5,14 @@ import ru.smn.poker.dto.Instance
 
 @Service
 class BankTimeManagerImpl : BankTimeManager {
-    override fun calculatingTime(instance: Instance, startTime: Long) {
-        val endTime = System.currentTimeMillis()
-
-        instance.timeBank -= ((endTime - startTime) / 1000).toInt()
-        if (instance.timeBank < 0) {
-            instance.timeBank = 0
+    val DEFAULT_TIME_TO_ACTION: Int = 20
+    override fun calculatingTime(instance: Instance, timeAction: Long) {
+        val waitingTime: Int = (timeAction / 1000).toInt()
+        println(waitingTime)
+        if (waitingTime <= DEFAULT_TIME_TO_ACTION) {
+            println(waitingTime)
+            return
         }
+        instance.timeBank -= (waitingTime - DEFAULT_TIME_TO_ACTION)
     }
 }

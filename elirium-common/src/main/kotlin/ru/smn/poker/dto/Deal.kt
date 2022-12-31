@@ -15,6 +15,7 @@ data class Deal(
     var stage: StageStatus = StageStatus(Stage.PRE_FLOP, false),
     var bank: Long = 0,
     var finished: Boolean = false,
+    var timeToAction: Long = 20L,
 ) {
 
     fun nextStage(): StageStatus {
