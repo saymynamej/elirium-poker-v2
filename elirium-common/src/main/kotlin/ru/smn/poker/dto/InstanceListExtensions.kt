@@ -65,17 +65,17 @@ fun MutableList<Instance>.everyoneHasTheSameBet(stage: Stage): Boolean {
     val removedFoldedInstances = this.removeFolded()
 
     val bets = removedFoldedInstances
-        .map { instance -> instance.history[stage] }
+        .mapNotNull { instance -> instance.history[stage] }
         .map { actions ->
-            actions!!
+            actions
                 .filterIsInstance<CountAction>()
                 .sumOf { action -> action.count }
         }
 
     val bigBlindHasOneBet = stage == Stage.PRE_FLOP && removedFoldedInstances
         .filter { instance -> instance.role == Role.BIG_BLIND }
-        .filter { instance -> instance.history[Stage.PRE_FLOP] != null }
-        .map { instance -> instance.history[Stage.PRE_FLOP]!!.size == 1 }
+        .mapNotNull { instance -> instance.history[Stage.PRE_FLOP] }
+        .map { history -> history.size == 1 }
         .firstOrNull() ?: false
 
     val distinct = bets.distinct()
