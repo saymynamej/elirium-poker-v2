@@ -5,6 +5,7 @@ import ru.smn.poker.actions.Role
 
 private const val NOT_FOUND_INDEX: Int = -1
 private const val MAXIMUM_RETRIES_FOR_FINDING_PLAYER: Int = 18
+
 data class IndexAndInstance(val index: Int, val instance: Instance)
 
 fun MutableList<Instance>.isDealFinished(stage: Stage): Boolean {
@@ -68,8 +69,8 @@ fun MutableList<Instance>.everyoneHasTheSameBet(stage: Stage): Boolean {
 
     val bigBlindHasOneBet = stage == Stage.PRE_FLOP && removedFoldedInstances
         .filter { instance -> instance.role == Role.BIG_BLIND }
-        .filter { instance -> instance.history[Stage.PRE_FLOP] != null }
-        .map { instance -> instance.history[Stage.PRE_FLOP]!!.size == 1 }
+        .mapNotNull { instance -> instance.history[Stage.PRE_FLOP] }
+        .map { history -> history.size == 1 }
         .firstOrNull() ?: false
 
     val distinct = bets.distinct()
