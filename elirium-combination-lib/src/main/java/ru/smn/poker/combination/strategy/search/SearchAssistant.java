@@ -34,8 +34,7 @@ public class SearchAssistant {
         }
         return Combination.of(
                 combination.getCombinationType(),
-                sortByDesc(combination.getCards()),
-                combination.getPower()
+                sortByDesc(combination.getCards())
         );
     }
 }
