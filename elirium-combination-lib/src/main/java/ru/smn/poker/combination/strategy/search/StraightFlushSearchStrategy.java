@@ -23,7 +23,6 @@ class StraightFlushSearchStrategy implements SearchStrategy {
         if (!straitWithAce.isEmpty()) {
             final Combination straitFlushWithAce = SearchAssistant.find(CombinationType.FLUSH, straitWithAce);
             if (!straitFlushWithAce.isEmpty()) {
-
                 return Combination.of(CombinationType.STRAIGHT_FLUSH, straitFlushWithAce.getCards());
             }
         }

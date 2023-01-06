@@ -14,11 +14,9 @@ import java.util.List;
 public class Combination {
     private final CombinationType combinationType;
     private final List<Card> cards;
-    private final Integer power;
 
     public static Combination empty() {
         return Combination.builder()
-                .power(null)
                 .cards(null)
                 .combinationType(null)
                 .build();
@@ -31,15 +29,11 @@ public class Combination {
                 .build();
     }
 
-    public static Combination of(CombinationType type, List<Card> cards, Integer power) {
-        return Combination.builder()
-                .combinationType(type)
-                .cards(cards)
-                .power(power)
-                .build();
-    }
-
     public boolean isEmpty() {
         return cards == null || cards.isEmpty();
+    }
+
+    public List<Card> getCards() {
+        return cards;
     }
 }

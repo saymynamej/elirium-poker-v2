@@ -19,7 +19,7 @@ class OnePairSearchStrategy implements SearchStrategy {
                 .entrySet().stream()
                 .filter(entry -> entry.getValue().size() == CardSizeData.PAIR_SIZE)
                 .flatMap(entry -> entry.getValue().stream())
-                .collect(Collectors.toList());
+                .toList();
 
         if (pair.isEmpty()) {
             return Combination.empty();
@@ -28,7 +28,7 @@ class OnePairSearchStrategy implements SearchStrategy {
         final List<Card> highCards = CardUtils.sortByDesc(cards).stream()
                 .filter(cardType -> cardType.getPowerAsInt() != pair.get(0).getPowerAsInt())
                 .limit(3)
-                .collect(Collectors.toList());
+                .toList();
 
         final List<Card> pairCombination = Stream.concat(pair.stream(), highCards.stream())
                 .collect(Collectors.toList());
