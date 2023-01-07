@@ -6,13 +6,7 @@ plugins {
     application
 }
 
-group = "ru.smn.poker"
-version = "1.0-SNAPSHOT"
 val springBootVersion: String by project
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation(project(":elirium-combination-lib"))

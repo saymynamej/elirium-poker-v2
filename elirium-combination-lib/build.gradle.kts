@@ -5,26 +5,16 @@ plugins {
     application
 }
 
-group = "ru.smn.poker"
-version = "1.0-SNAPSHOT"
-
 val springBootVersion: String by project
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation("org.springframework.boot:spring-boot-autoconfigure:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
     implementation("org.projectlombok:lombok:1.18.22")
     annotationProcessor("org.projectlombok:lombok:1.18.22")
     testImplementation(kotlin("test"))
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
